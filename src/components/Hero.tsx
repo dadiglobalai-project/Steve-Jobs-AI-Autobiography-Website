@@ -13,9 +13,9 @@ export const Hero: React.FC = () => {
   React.useEffect(() => {
     // Preload hero backgrounds
     const images = [
-      '/images/heroBg.png',
-      '/images/lightHeroBg.png',
-      '/images/mobileHeroBg.png'
+      './images/heroBg.png',
+      './images/lightHeroBg.png',
+      './images/mobileHeroBg.png'
     ];
     images.forEach(src => {
       const img = new Image();
