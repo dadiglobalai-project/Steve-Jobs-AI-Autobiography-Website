@@ -39,7 +39,7 @@ export const Hero: React.FC = () => {
         {/* Desktop Dark Background */}
         <motion.img 
           key="desktop-dark-bg"
-          src="/images/heroBg.png"
+          src="./images/heroBg.png"
           alt="Hero Background Desktop Dark" 
           initial={{ opacity: 0 }}
           animate={{ opacity: (!isMobile && theme === 'dark') ? 1 : 0 }}
@@ -49,7 +49,7 @@ export const Hero: React.FC = () => {
         {/* Desktop Light Background */}
         <motion.img 
           key="desktop-light-bg"
-          src="/images/lightHeroBg.png"
+          src="./images/lightHeroBg.png"
           alt="Hero Background Desktop Light" 
           initial={{ opacity: 0 }}
           animate={{ opacity: (!isMobile && theme === 'light') ? 1 : 0 }}
@@ -59,7 +59,7 @@ export const Hero: React.FC = () => {
         {/* Mobile Dark Background */}
         <motion.img 
           key="mobile-dark-bg"
-          src="/images/mobileHeroBg.png"
+          src="./images/mobileHeroBg.png"
           alt="Hero Background Mobile Dark" 
           initial={{ opacity: 0 }}
           animate={{ opacity: (isMobile && theme === 'dark') ? 1 : 0 }}
@@ -69,7 +69,7 @@ export const Hero: React.FC = () => {
         {/* Mobile Light Background (Using lightHeroBg.png as fallback if no specific mobile light bg) */}
         <motion.img 
           key="mobile-light-bg"
-          src="/images/lightHeroBg.png"
+          src="./images/lightHeroBg.png"
           alt="Hero Background Mobile Light" 
           initial={{ opacity: 0 }}
           animate={{ opacity: (isMobile && theme === 'light') ? 1 : 0 }}
