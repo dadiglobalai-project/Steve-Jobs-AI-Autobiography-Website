@@ -11,6 +11,17 @@ export const Hero: React.FC = () => {
   const [isMobile, setIsMobile] = React.useState(false);
 
   React.useEffect(() => {
+    // Preload hero backgrounds
+    const images = [
+      '/images/heroBg.png',
+      '/images/lightHeroBg.png',
+      '/images/mobileHeroBg.png'
+    ];
+    images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 768);
     };
@@ -25,24 +36,49 @@ export const Hero: React.FC = () => {
     >
       {/* Background Image (Full Bleed) */}
       <div className="absolute inset-0 z-0">
+        {/* Desktop Dark Background */}
         <motion.img 
-          key="desktop-bg"
+          key="desktop-dark-bg"
           src="/images/heroBg.png"
-          alt="Hero Background Desktop" 
+          alt="Hero Background Desktop Dark" 
           initial={{ opacity: 0 }}
-          animate={{ opacity: isMobile ? 0 : 1 }}
+          animate={{ opacity: (!isMobile && theme === 'dark') ? 1 : 0 }}
           transition={{ duration: 0.8 }}
-          className="absolute inset-0 w-full h-full object-cover grayscale brightness-88"
+          className="absolute inset-0 w-full h-full object-cover grayscale brightness-100"
         />
+        {/* Desktop Light Background */}
         <motion.img 
-          key="mobile-bg"
-          src="/images/mobileHeroBg.png"
-          alt="Hero Background Mobile" 
+          key="desktop-light-bg"
+          src="/images/lightHeroBg.png"
+          alt="Hero Background Desktop Light" 
           initial={{ opacity: 0 }}
-          animate={{ opacity: isMobile ? 1 : 0 }}
+          animate={{ opacity: (!isMobile && theme === 'light') ? 1 : 0 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 w-full h-full object-cover brightness-100"
+        />
+        {/* Mobile Dark Background */}
+        <motion.img 
+          key="mobile-dark-bg"
+          src="/images/mobileHeroBg.png"
+          alt="Hero Background Mobile Dark" 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: (isMobile && theme === 'dark') ? 1 : 0 }}
           transition={{ duration: 0.8 }}
           className="absolute inset-0 w-full h-full object-cover grayscale brightness-70"
         />
+        {/* Mobile Light Background (Using lightHeroBg.png as fallback if no specific mobile light bg) */}
+        <motion.img 
+          key="mobile-light-bg"
+          src="/images/lightHeroBg.png"
+          alt="Hero Background Mobile Light" 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: (isMobile && theme === 'light') ? 1 : 0 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 w-full h-full object-cover brightness-88"
+        />
+        
+        {/* Gradient Overlay for Readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/30 to-transparent z-10" />
       </div>
 
       {/* Scroll Progress Indicator */}

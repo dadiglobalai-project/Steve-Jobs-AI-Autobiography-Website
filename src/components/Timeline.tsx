@@ -83,7 +83,7 @@ export const Timeline: React.FC = () => {
               style={{ objectPosition: 'center' }}
               referrerPolicy="no-referrer"
             />
-            <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-black/40' : 'bg-white/50'}`} />
+            <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-black/40' : 'bg-white/70'}`} />
           </motion.div>
         </AnimatePresence>
       </div>
@@ -106,7 +106,7 @@ export const Timeline: React.FC = () => {
             The Journey of <br />
             a <span className="font-medium italic">Visionary</span>
           </h1>
-          <p className={`text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-gray-600'}`}>
+          <p className={`text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-gray-700'}`}>
             Walk through the setbacks, breakthroughs, and revolutions that changed everything.
           </p>
         </motion.div>
@@ -154,18 +154,18 @@ export const Timeline: React.FC = () => {
             {/* Sticky Content Display Area */}
             <div className="sticky top-0 h-screen flex flex-col justify-center pointer-events-none z-10">
             <div className={`max-w-2xl mx-auto md:mx-0 text-center md:text-left pointer-events-auto transition-opacity duration-300 ${activeIndex === -1 ? 'opacity-0' : 'opacity-100'}`}>
-                <span className={`text-[10px] font-mono uppercase tracking-[0.6em] mb-6 block transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/40'}`}>
+                <span className={`text-[10px] font-mono uppercase tracking-[0.6em] mb-6 block transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/60'}`}>
                   {timelineEvents[activeIndex]?.year}
                 </span>
                 <h2 className={`text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-tight mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
                   {timelineEvents[activeIndex]?.title}
                 </h2>
-                <p className={`text-lg md:text-xl font-light mb-10 leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/80' : 'text-gray-200'}`}>
+                <p className={`text-lg md:text-xl font-light mb-10 leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>
                   {timelineEvents[activeIndex]?.description}
                 </p>
                 <Link
                   to={`/journey/${timelineEvents[activeIndex]?.year}`}
-                  className={`group relative inline-flex items-center gap-6 text-xs font-mono uppercase tracking-[0.4em] transition-all duration-500 ${theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-black/50 hover:text-black'}`}
+                  className={`group relative inline-flex items-center gap-6 text-xs font-mono uppercase tracking-[0.4em] transition-all duration-500 ${theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-black/70 hover:text-black'}`}
                   aria-label={`Navigate to ${timelineEvents[activeIndex]?.title} milestone details`}
                 >
                   <span className="relative z-10">{timelineEvents[activeIndex]?.cta}</span>

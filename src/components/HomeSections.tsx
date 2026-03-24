@@ -7,14 +7,15 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 export const JourneySection: React.FC = () => {
+  const { theme } = useTheme();
   const { playSFX } = useAudio();
   
   return (
-    <section id="journey-teaser" className="relative min-h-screen flex items-center justify-center bg-black text-white overflow-hidden py-20 lg:py-24 xl:py-32">
+    <section id="journey-teaser" className={`relative min-h-screen flex items-center justify-center overflow-hidden py-20 lg:py-24 xl:py-32 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
       {/* Background Atmosphere */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05)_0%,transparent_50%)]"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.03)_0%,transparent_40%)]"></div>
+        <div className={`absolute inset-0 transition-opacity duration-500 ${theme === 'dark' ? 'bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.05)_0%,transparent_50%)]' : 'bg-[radial-gradient(circle_at_30%_50%,rgba(0,0,0,0.03)_0%,transparent_50%)]'}`}></div>
+        <div className={`absolute inset-0 transition-opacity duration-500 ${theme === 'dark' ? 'bg-[radial-gradient(circle_at_70%_80%,rgba(255,255,255,0.03)_0%,transparent_40%)]' : 'bg-[radial-gradient(circle_at_70%_80%,rgba(0,0,0,0.02)_0%,transparent_40%)]'}`}></div>
         
         {/* Animated Background Elements */}
         <motion.div 
@@ -69,9 +70,9 @@ export const JourneySection: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="mb-8 inline-flex items-center gap-4 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                  <Sparkles className="w-4 h-4 text-white/60" />
-                  <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/60">The Narrative Journey</span>
+                <div className={`mb-8 inline-flex items-center gap-4 px-4 py-2 rounded-full transition-colors duration-500 ${theme === 'dark' ? 'bg-white/5 border border-white/10' : 'bg-black/5 border border-black/10'}`}>
+                  <Sparkles className={`w-4 h-4 transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`} />
+                  <span className={`text-[10px] font-mono uppercase tracking-[0.4em] transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>The Narrative Journey</span>
                 </div>
                 
                 <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-7xl font-light tracking-tighter leading-[0.9] mb-10">
@@ -79,7 +80,7 @@ export const JourneySection: React.FC = () => {
                   Behind the <span className="font-medium">Ideas</span>
                 </h2>
                 
-                <p className="text-lg md:text-2xl font-light text-white/50 leading-relaxed mb-16 max-w-xl">
+                <p className={`text-lg md:text-2xl font-light leading-relaxed mb-16 max-w-xl transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>
                   Explore the experiences, milestones, and moments that shaped Steve’s thinking. Every step tells a story worth understanding.
                 </p>
 
@@ -87,7 +88,11 @@ export const JourneySection: React.FC = () => {
                   <Link 
                     to="/journey"
                     onClick={() => playSFX('click')}
-                    className="inline-flex items-center gap-6 px-8 py-4 bg-white text-black rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-10 group-hover:shadow-[0_0_30px_rgba(255,255,255,0.15)]"
+                    className={`inline-flex items-center gap-6 px-8 py-4 rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-10 ${
+                      theme === 'dark' 
+                        ? 'bg-white text-black hover:shadow-[0_0_30px_rgba(255,255,255,0.15)]' 
+                        : 'bg-black text-white hover:shadow-[0_0_30px_rgba(0,0,0,0.15)]'
+                    }`}
                   >
                     View the Journey
                     <ArrowRight className="w-5 h-5" />
@@ -99,7 +104,7 @@ export const JourneySection: React.FC = () => {
                     whileHover={{ opacity: 1, y: 0 }}
                     className="absolute -bottom-10 left-0 w-full text-center md:text-left opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"
                   >
-                    <span className="text-[11px] font-mono uppercase tracking-[0.4em] text-white/40 italic">
+                    <span className={`text-[11px] font-mono uppercase tracking-[0.4em] italic transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
                       “See how it all started”
                     </span>
                   </motion.div>
@@ -119,10 +124,10 @@ export const JourneySection: React.FC = () => {
                       transition={{ delay: 0.6 + (i * 0.1) }}
                       className="flex flex-col gap-3"
                     >
-                      <item.icon className="w-6 h-6 text-white/20" />
+                      <item.icon className={`w-6 h-6 transition-colors duration-500 ${theme === 'dark' ? 'text-white/20' : 'text-black/20'}`} />
                       <div>
                         <p className="text-2xl font-light">{item.value}</p>
-                        <p className="text-[9px] font-mono uppercase tracking-widest text-white/30">{item.label}</p>
+                        <p className={`text-[9px] font-mono uppercase tracking-widest transition-colors duration-500 ${theme === 'dark' ? 'text-white/30' : 'text-black/30'}`}>{item.label}</p>
                       </div>
                     </motion.div>
                   ))}
@@ -137,21 +142,22 @@ export const JourneySection: React.FC = () => {
 };
 
 export const WisdomTeaser: React.FC = () => {
+  const { theme } = useTheme();
   const { playSFX } = useAudio();
   
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-black text-white overflow-hidden py-20 lg:py-24 xl:py-32">
+    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden py-20 lg:py-24 xl:py-32 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
       {/* Background Zen Elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-white/5 rounded-full blur-[120px]"></div>
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full blur-[120px] transition-colors duration-500 ${theme === 'dark' ? 'bg-white/5' : 'bg-black/5'}`}></div>
         <motion.div 
           animate={{ 
             rotate: 360,
           }}
           transition={{ duration: 60, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[-10%] right-[-10%] opacity-10"
+          className={`absolute top-[-10%] right-[-10%] opacity-10 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}
         >
-          <Quote className="w-[40vw] h-[40vw] text-white" />
+          <Quote className="w-[40vw] h-[40vw] text-current" />
         </motion.div>
       </div>
 
@@ -166,8 +172,8 @@ export const WisdomTeaser: React.FC = () => {
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mb-8 flex items-center gap-4">
-                <div className="w-10 h-px bg-white/30"></div>
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/40">The Mindset</span>
+                <div className={`w-10 h-px transition-colors duration-500 ${theme === 'dark' ? 'bg-white/30' : 'bg-black/30'}`}></div>
+                <span className={`text-[10px] font-mono uppercase tracking-[0.4em] transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>The Mindset</span>
               </div>
               
               <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-7xl font-light tracking-tighter leading-[0.9] mb-8">
@@ -175,7 +181,7 @@ export const WisdomTeaser: React.FC = () => {
                 One <span className="font-medium">Thought</span> at a Time
               </h2>
               
-              <p className="text-lg md:text-2xl font-light text-white/50 leading-relaxed mb-12 max-w-lg">
+              <p className={`text-lg md:text-2xl font-light leading-relaxed mb-12 max-w-lg transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>
                 Dive into a curated collection of quotes and reflections—short, powerful ideas that stay with you long after you read them.
               </p>
 
@@ -183,7 +189,9 @@ export const WisdomTeaser: React.FC = () => {
                 <Link 
                   to="/wisdom"
                   onClick={() => playSFX('click')}
-                  className="inline-flex items-center gap-6 px-10 py-5 bg-white text-black rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12"
+                  className={`inline-flex items-center gap-6 px-10 py-5 rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12 ${
+                    theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                  }`}
                 >
                   Read the Wisdom
                   <ArrowRight className="w-5 h-5" />
@@ -195,7 +203,7 @@ export const WisdomTeaser: React.FC = () => {
                   whileHover={{ opacity: 1, y: 0 }}
                   className="absolute -bottom-10 left-0 w-full text-center md:text-left opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"
                 >
-                  <span className="text-[11px] font-mono uppercase tracking-[0.4em] text-white/40 italic">
+                  <span className={`text-[11px] font-mono uppercase tracking-[0.4em] italic transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
                     “Find your next insight”
                   </span>
                 </motion.div>
@@ -223,10 +231,16 @@ export const WisdomTeaser: React.FC = () => {
               <motion.div 
                 animate={{ y: [0, -10, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -left-4 md:top-12 md:-left-8 p-6 md:p-8 bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl max-w-[200px] md:max-w-[280px] z-20"
+                className={`absolute -top-6 -left-4 md:top-12 md:-left-8 p-6 md:p-8 backdrop-blur-2xl rounded-3xl max-w-[200px] md:max-w-[280px] z-20 transition-colors duration-500 ${
+                  theme === 'dark' ? 'bg-white/5 border border-white/10' : 'bg-white/90 border border-black/10'
+                }`}
               >
-                <Quote className="w-6 h-6 md:w-8 md:h-8 text-white/20 mb-3 md:mb-4" />
-                <p className="text-base md:text-lg font-light italic leading-relaxed">
+                <Quote className={`w-6 h-6 md:w-8 md:h-8 mb-3 md:mb-4 transition-colors duration-500 ${
+                  theme === 'dark' ? 'text-white/20' : 'text-black/20'
+                }`} />
+                <p className={`text-base md:text-lg font-light italic leading-relaxed transition-colors duration-500 ${
+                  theme === 'dark' ? 'text-white' : 'text-black'
+                }`}>
                   "Stay hungry, stay foolish."
                 </p>
               </motion.div>
@@ -236,9 +250,13 @@ export const WisdomTeaser: React.FC = () => {
             <motion.div 
               animate={{ y: [0, 20, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-              className="absolute -bottom-10 -right-10 w-32 h-32 bg-zinc-900 rounded-full border border-white/10 flex items-center justify-center z-20"
+              className={`absolute -bottom-10 -right-10 w-32 h-32 rounded-full flex items-center justify-center z-20 transition-colors duration-500 ${
+                theme === 'dark' ? 'bg-zinc-900 border border-white/10' : 'bg-zinc-100 border border-black/10'
+              }`}
             >
-              <Lightbulb className="w-10 h-10 text-white/40" />
+              <Lightbulb className={`w-10 h-10 transition-colors duration-500 ${
+                theme === 'dark' ? 'text-white/40' : 'text-black/40'
+              }`} />
             </motion.div>
           </div>
         </div>
@@ -249,13 +267,14 @@ export const WisdomTeaser: React.FC = () => {
 };
 
 export const DocumentaryTeaser: React.FC = () => {
+  const { theme } = useTheme();
   const { playSFX } = useAudio();
   
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-black text-white overflow-hidden py-20 lg:py-24 xl:py-32">
+    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden py-20 lg:py-24 xl:py-32 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
       {/* Cinematic Background Overlay */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent z-10"></div>
+        <div className={`absolute inset-0 transition-opacity duration-500 ${theme === 'dark' ? 'bg-gradient-to-r from-black via-black/80 to-transparent' : 'bg-gradient-to-r from-white via-white/80 to-transparent'} z-10`}></div>
         <motion.div 
           initial={{ scale: 1.1, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 0.3 }}
@@ -282,9 +301,9 @@ export const DocumentaryTeaser: React.FC = () => {
                 viewport={{ once: true }}
                 transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               >
-                <div className="mb-8 inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/5 border border-white/10">
-                  <Film className="w-4 h-4 text-white/60" />
-                  <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/60">Visual Narrative</span>
+                <div className={`mb-8 inline-flex items-center gap-3 px-4 py-2 rounded-full transition-colors duration-500 ${theme === 'dark' ? 'bg-white/5 border border-white/10' : 'bg-black/5 border border-black/10'}`}>
+                  <Film className={`w-4 h-4 transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`} />
+                  <span className={`text-[10px] font-mono uppercase tracking-[0.4em] transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>Visual Narrative</span>
                 </div>
                 
                 <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-7xl font-light tracking-tighter leading-[0.9] mb-8">
@@ -293,7 +312,7 @@ export const DocumentaryTeaser: React.FC = () => {
                   to <span className="font-medium">Life</span>
                 </h2>
                 
-                <p className="text-lg md:text-2xl font-light text-white/50 leading-relaxed mb-12 max-w-lg">
+                <p className={`text-lg md:text-2xl font-light leading-relaxed mb-12 max-w-lg transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>
                   Watch the journey unfold through compelling visuals and narratives that reveal the depth behind the thinking.
                 </p>
 
@@ -301,7 +320,9 @@ export const DocumentaryTeaser: React.FC = () => {
                   <Link 
                     to="/documentary"
                     onClick={() => playSFX('click')}
-                    className="inline-flex items-center gap-6 px-10 py-5 bg-white text-black rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
+                    className={`inline-flex items-center gap-6 px-10 py-5 rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] ${
+                      theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                    }`}
                   >
                     <Play className="w-5 h-5 fill-current" />
                     Watch the Documentary
@@ -313,7 +334,7 @@ export const DocumentaryTeaser: React.FC = () => {
                     whileHover={{ opacity: 1, y: 0 }}
                     className="absolute -bottom-10 left-0 w-full text-center md:text-left opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"
                   >
-                    <span className="text-[11px] font-mono uppercase tracking-[0.4em] text-white/40 italic">
+                    <span className={`text-[11px] font-mono uppercase tracking-[0.4em] italic transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
                       “Experience the story”
                     </span>
                   </motion.div>
@@ -357,14 +378,22 @@ export const DocumentaryTeaser: React.FC = () => {
                   rotate: [0, 5, 0]
                 }}
                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-6 -right-4 md:-top-10 md:-right-10 p-4 md:p-6 bg-zinc-900 border border-white/10 rounded-2xl z-20"
+                className={`absolute -top-6 -right-4 md:-top-10 md:-right-10 p-4 md:p-6 rounded-2xl z-20 transition-colors duration-500 ${
+                  theme === 'dark' ? 'bg-zinc-900 border border-white/10' : 'bg-zinc-100 border border-black/10'
+                }`}
               >
                 <div className="flex items-center gap-3 md:gap-4">
-                  <div className="w-10 h-10 md:w-12 md:h-12 rounded-lg bg-white/5 flex items-center justify-center">
-                    <Film className="w-5 h-5 md:w-6 md:h-6 text-white/40" />
+                  <div className={`w-10 h-10 md:w-12 md:h-12 rounded-lg flex items-center justify-center transition-colors duration-500 ${
+                    theme === 'dark' ? 'bg-white/5' : 'bg-black/5'
+                  }`}>
+                    <Film className={`w-5 h-5 md:w-6 md:h-6 transition-colors duration-500 ${
+                      theme === 'dark' ? 'text-white/40' : 'text-black/40'
+                    }`} />
                   </div>
                   <div>
-                    <p className="text-[9px] md:text-xs font-mono uppercase tracking-widest text-white/40 mb-1">Total Runtime</p>
+                    <p className={`text-[9px] md:text-xs font-mono uppercase tracking-widest mb-1 transition-colors duration-500 ${
+                      theme === 'dark' ? 'text-white/40' : 'text-black/60'
+                    }`}>Total Runtime</p>
                     <p className="text-base md:text-lg font-light">15:00</p>
                   </div>
                 </div>
@@ -378,6 +407,7 @@ export const DocumentaryTeaser: React.FC = () => {
 };
 
 export const ConversationTeaser: React.FC = () => {
+  const { theme } = useTheme();
   const { playSFX } = useAudio();
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -419,14 +449,14 @@ export const ConversationTeaser: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-black text-white overflow-hidden py-20 lg:py-24 xl:py-32">
+    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden py-20 lg:py-24 xl:py-32 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
       {/* Background Abstract Elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-500/5 rounded-full blur-[120px]"></div>
-        <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-500/5 rounded-full blur-[120px]"></div>
+        <div className={`absolute top-0 right-0 w-[600px] h-[600px] rounded-full blur-[120px] transition-colors duration-500 ${theme === 'dark' ? 'bg-blue-500/5' : 'bg-blue-500/10'}`}></div>
+        <div className={`absolute bottom-0 left-0 w-[600px] h-[600px] rounded-full blur-[120px] transition-colors duration-500 ${theme === 'dark' ? 'bg-purple-500/5' : 'bg-purple-500/10'}`}></div>
         
         {/* Animated Grid Lines */}
-        <div className="absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+        <div className={`absolute inset-0 opacity-[0.05] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:40px_40px] ${theme === 'dark' ? 'invert-0' : 'invert'}`}></div>
       </div>
 
       <div className="container relative z-10 mx-auto px-6">
@@ -440,8 +470,8 @@ export const ConversationTeaser: React.FC = () => {
               transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="mb-8 flex items-center gap-4">
-                <div className="w-10 h-px bg-white/30"></div>
-                <span className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/40">Interactive Experience</span>
+                <div className={`w-10 h-px transition-colors duration-500 ${theme === 'dark' ? 'bg-white/30' : 'bg-black/30'}`}></div>
+                <span className={`text-[10px] font-mono uppercase tracking-[0.4em] transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>Interactive Experience</span>
               </div>
               
               <h2 className="text-4xl md:text-6xl lg:text-7xl xl:text-7xl font-light tracking-tighter leading-[0.9] mb-8">
@@ -449,7 +479,7 @@ export const ConversationTeaser: React.FC = () => {
                 <span className="font-medium">Engage</span>.
               </h2>
               
-              <p className="text-lg md:text-2xl font-light text-white/50 leading-relaxed mb-12 max-w-lg">
+              <p className={`text-lg md:text-2xl font-light leading-relaxed mb-12 max-w-lg transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>
                 Have a question or a thought? Start a conversation and explore ideas in a more personal, interactive way.
               </p>
 
@@ -457,7 +487,9 @@ export const ConversationTeaser: React.FC = () => {
                 <Link 
                   to="/talk-to-steve"
                   onClick={() => playSFX('click')}
-                  className="inline-flex items-center gap-6 px-10 py-5 bg-white text-black rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
+                  className={`inline-flex items-center gap-6 px-10 py-5 rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] ${
+                    theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                  }`}
                 >
                   Start a Conversation
                   <ArrowRight className="w-5 h-5" />
@@ -469,7 +501,7 @@ export const ConversationTeaser: React.FC = () => {
                   whileHover={{ opacity: 1, y: 0 }}
                   className="absolute -bottom-12 left-0 w-full text-center md:text-left opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"
                 >
-                  <span className="text-[11px] font-mono uppercase tracking-[0.4em] text-white/40 italic">
+                  <span className={`text-[11px] font-mono uppercase tracking-[0.4em] italic transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
                     “Your questions, answered intelligently”
                   </span>
                 </motion.div>
@@ -485,11 +517,15 @@ export const ConversationTeaser: React.FC = () => {
               className="relative"
             >
               {/* Main Chat Interface Mockup */}
-              <div className="relative z-10 bg-zinc-900/50 backdrop-blur-2xl border border-white/10 rounded-[2.5rem] p-8 shadow-2xl overflow-hidden">
+              <div className={`relative z-10 backdrop-blur-2xl rounded-[2.5rem] p-8 shadow-2xl overflow-hidden transition-colors duration-500 ${
+                theme === 'dark' ? 'bg-zinc-900/50 border border-white/10' : 'bg-zinc-100/50 border border-black/10'
+              }`}>
                 <div className="flex items-center justify-between mb-12">
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
-                      <User className="w-6 h-6 text-white/60" />
+                    <div className={`w-12 h-12 rounded-full flex items-center justify-center border transition-colors duration-500 ${
+                      theme === 'dark' ? 'bg-white/10 border-white/10' : 'bg-black/10 border-black/10'
+                    }`}>
+                      <User className={`w-6 h-6 transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`} />
                     </div>
                     <div>
                       <p className="text-sm font-medium">Steve Jobs AI</p>
@@ -497,22 +533,26 @@ export const ConversationTeaser: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex gap-2">
-                    <div className="w-2 h-2 rounded-full bg-white/10"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/10"></div>
-                    <div className="w-2 h-2 rounded-full bg-white/10"></div>
+                    <div className={`w-2 h-2 rounded-full transition-colors duration-500 ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}></div>
+                    <div className={`w-2 h-2 rounded-full transition-colors duration-500 ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}></div>
+                    <div className={`w-2 h-2 rounded-full transition-colors duration-500 ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'}`}></div>
                   </div>
                 </div>
 
                 {/* Chat Bubbles Mockup */}
                 <div className="space-y-6 mb-12">
                   <div className="flex justify-end">
-                    <div className="bg-white/10 rounded-2xl rounded-tr-none px-6 py-4 max-w-[80%]">
-                      <p className="text-sm font-light text-white/80">How do you stay focused on what matters?</p>
+                    <div className={`rounded-2xl rounded-tr-none px-6 py-4 max-w-[80%] transition-colors duration-500 ${
+                      theme === 'dark' ? 'bg-white/10' : 'bg-black/10'
+                    }`}>
+                      <p className={`text-sm font-light transition-colors duration-500 ${theme === 'dark' ? 'text-white/80' : 'text-black/80'}`}>How do you stay focused on what matters?</p>
                     </div>
                   </div>
                   <div className="flex justify-start">
-                    <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-none px-6 py-4 max-w-[80%]">
-                      <p className="text-sm font-light text-white/60 italic">
+                    <div className={`border rounded-2xl rounded-tl-none px-6 py-4 max-w-[80%] transition-colors duration-500 ${
+                      theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/10'
+                    }`}>
+                      <p className={`text-sm font-light italic transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
                         "Focusing is about saying no to the hundred other good ideas that there are. You have to pick carefully."
                       </p>
                     </div>
@@ -521,18 +561,24 @@ export const ConversationTeaser: React.FC = () => {
 
                 {/* Animated Question Bar */}
                 <div className="relative">
-                  <div className="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 flex items-center gap-4 group-hover:border-white/30 transition-colors duration-500">
-                    <Search className="w-5 h-5 text-white/20" />
-                    <div className="flex-1 text-sm font-light text-white/40 min-h-[1.25rem] flex items-center">
+                  <div className={`w-full border rounded-2xl px-6 py-5 flex items-center gap-4 transition-all duration-500 ${
+                    theme === 'dark' ? 'bg-black/50 border-white/10 group-hover:border-white/30' : 'bg-white/50 border-black/10 group-hover:border-black/30'
+                  }`}>
+                    <Search className={`w-5 h-5 transition-colors duration-500 ${theme === 'dark' ? 'text-white/20' : 'text-black/20'}`} />
+                    <div className={`flex-1 text-sm font-light min-h-[1.25rem] flex items-center transition-colors duration-500 ${
+                      theme === 'dark' ? 'text-white/40' : 'text-black/40'
+                    }`}>
                       {displayText}
                       <motion.span 
                         animate={{ opacity: [0, 1, 0] }}
                         transition={{ duration: 0.8, repeat: Infinity }}
-                        className="w-[2px] h-4 bg-white/60 ml-1"
+                        className={`w-[2px] h-4 ml-1 transition-colors duration-500 ${theme === 'dark' ? 'bg-white/60' : 'bg-black/60'}`}
                       />
                     </div>
-                    <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
-                      <Send className="w-4 h-4 text-white/20" />
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-colors duration-500 ${
+                      theme === 'dark' ? 'bg-white/5 border-white/10' : 'bg-black/5 border-black/10'
+                    }`}>
+                      <Send className={`w-4 h-4 transition-colors duration-500 ${theme === 'dark' ? 'text-white/20' : 'text-black/20'}`} />
                     </div>
                   </div>
                 </div>
@@ -542,17 +588,21 @@ export const ConversationTeaser: React.FC = () => {
               <motion.div 
                 animate={{ y: [0, -20, 0] }}
                 transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-10 -right-10 w-24 h-24 bg-zinc-900 rounded-full border border-white/10 flex items-center justify-center z-20"
+                className={`absolute -top-10 -right-10 w-24 h-24 rounded-full border flex items-center justify-center z-20 transition-colors duration-500 ${
+                  theme === 'dark' ? 'bg-zinc-900 border-white/10' : 'bg-zinc-100 border-black/10'
+                }`}
               >
-                <MessageSquare className="w-8 h-8 text-white/20" />
+                <MessageSquare className={`w-8 h-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white/20' : 'text-black/20'}`} />
               </motion.div>
               
               <motion.div 
                 animate={{ y: [0, 20, 0] }}
                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -bottom-10 -left-10 w-32 h-32 bg-zinc-900 rounded-full border border-white/10 flex items-center justify-center z-20"
+                className={`absolute -bottom-10 -left-10 w-32 h-32 rounded-full border flex items-center justify-center z-20 transition-colors duration-500 ${
+                  theme === 'dark' ? 'bg-zinc-900 border-white/10' : 'bg-zinc-100 border-black/10'
+                }`}
               >
-                <Zap className="w-10 h-10 text-white/20" />
+                <Zap className={`w-10 h-10 transition-colors duration-500 ${theme === 'dark' ? 'text-white/20' : 'text-black/20'}`} />
               </motion.div>
             </motion.div>
           </div>
@@ -635,6 +685,7 @@ export const InvitationSection: React.FC = () => {
 };
 
 export const SemanticSearchTeaser: React.FC = () => {
+  const { theme } = useTheme();
   const { playSFX } = useAudio();
   const [displayText, setDisplayText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
@@ -676,11 +727,11 @@ export const SemanticSearchTeaser: React.FC = () => {
   };
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center bg-black text-white overflow-hidden py-20 lg:py-24 xl:py-32">
+    <section className={`relative min-h-screen flex items-center justify-center overflow-hidden py-20 lg:py-24 xl:py-32 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
       {/* Background Elements */}
       <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-emerald-500/5 rounded-full blur-[140px]"></div>
-        <div className="absolute inset-0 opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]"></div>
+        <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full blur-[140px] transition-colors duration-500 ${theme === 'dark' ? 'bg-emerald-500/5' : 'bg-emerald-500/10'}`}></div>
+        <div className={`absolute inset-0 opacity-[0.03] transition-opacity duration-500 ${theme === 'dark' ? 'bg-[url("https://www.transparenttextures.com/patterns/stardust.png")]' : 'bg-[url("https://www.transparenttextures.com/patterns/stardust.png")] invert'}`}></div>
       </div>
 
       <div className="container relative z-10 mx-auto px-6">
@@ -696,7 +747,7 @@ export const SemanticSearchTeaser: React.FC = () => {
                 Find What You <span className="italic font-medium">Mean</span>— <br />
                 Not Just What You <span className="font-medium">Type</span>
               </h2>
-              <p className="text-lg md:text-2xl font-light text-white/60 tracking-[0.4em] uppercase mb-8">
+              <p className={`text-lg md:text-2xl font-light tracking-[0.4em] uppercase mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-black/60'}`}>
                 Smarter search, deeper results.
               </p>
             </motion.div>
@@ -712,10 +763,10 @@ export const SemanticSearchTeaser: React.FC = () => {
                 transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
               >
                 <div className="space-y-8 mb-12">
-                  <p className="text-lg md:text-2xl font-light text-white/50 leading-relaxed">
+                  <p className={`text-lg md:text-2xl font-light leading-relaxed transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>
                     Our semantic search understands intent, not just keywords. That means you can explore ideas naturally—just type what you're thinking, and discover content that truly matches your meaning.
                   </p>
-                  <p className="text-lg md:text-2xl font-light text-white/50 leading-relaxed">
+                  <p className={`text-lg md:text-2xl font-light leading-relaxed transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/50'}`}>
                     No guesswork. No exact phrasing needed. Just better results.
                   </p>
                 </div>
@@ -726,7 +777,9 @@ export const SemanticSearchTeaser: React.FC = () => {
                       playSFX('click');
                       window.dispatchEvent(new CustomEvent('highlight-search'));
                     }}
-                    className="inline-flex items-center gap-6 px-10 py-5 bg-white text-black rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.2)]"
+                    className={`inline-flex items-center gap-6 px-10 py-5 rounded-full text-xs md:text-sm font-medium uppercase tracking-[0.2em] transition-all duration-500 hover:gap-8 hover:pr-12 group-hover:shadow-[0_0_40px_rgba(255,255,255,0.2)] ${
+                      theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'
+                    }`}
                   >
                     Try Smart Search
                     <ArrowRight className="w-5 h-5" />
@@ -738,7 +791,7 @@ export const SemanticSearchTeaser: React.FC = () => {
                     whileHover={{ opacity: 1, y: 0 }}
                     className="absolute -bottom-12 left-0 w-full text-center md:text-left opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"
                   >
-                    <span className="text-[11px] font-mono uppercase tracking-[0.4em] text-white/40 italic">
+                    <span className={`text-[11px] font-mono uppercase tracking-[0.4em] italic transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`}>
                       “Search like you think”
                     </span>
                   </motion.div>
@@ -756,11 +809,17 @@ export const SemanticSearchTeaser: React.FC = () => {
                 className="space-y-8"
               >
                 {/* Search Bar Mockup */}
-                <div className="bg-zinc-900/50 backdrop-blur-2xl border border-white/10 rounded-[2rem] p-8 shadow-2xl">
+                <div className={`backdrop-blur-2xl rounded-[2rem] p-8 shadow-2xl transition-colors duration-500 ${
+                  theme === 'dark' ? 'bg-zinc-900/50 border border-white/10' : 'bg-zinc-100/50 border border-black/10'
+                }`}>
                   <div className="relative mb-8">
-                    <div className="w-full bg-black/50 border border-white/10 rounded-2xl px-6 py-5 flex items-center gap-4 group-hover:border-white/30 transition-colors duration-500">
+                    <div className={`w-full border rounded-2xl px-6 py-5 flex items-center gap-4 transition-all duration-500 ${
+                      theme === 'dark' ? 'bg-black/50 border-white/10 group-hover:border-white/30' : 'bg-white/50 border-black/10 group-hover:border-black/30'
+                    }`}>
                       <Search className="w-5 h-5 text-emerald-500" />
-                      <div className="flex-1 text-sm font-light text-white/80 min-h-[1.25rem] flex items-center">
+                      <div className={`flex-1 text-sm font-light min-h-[1.25rem] flex items-center transition-colors duration-500 ${
+                        theme === 'dark' ? 'text-white/80' : 'text-black/80'
+                      }`}>
                         {displayText}
                         <motion.span 
                           animate={{ opacity: [0, 1, 0] }}
@@ -773,7 +832,9 @@ export const SemanticSearchTeaser: React.FC = () => {
 
                   {/* Suggestion Results Animation */}
                   <div className="space-y-4">
-                    <p className="text-[10px] font-mono uppercase tracking-widest text-white/30 mb-4">Semantic Matches</p>
+                    <p className={`text-[10px] font-mono uppercase tracking-widest mb-4 transition-colors duration-500 ${
+                      theme === 'dark' ? 'text-white/30' : 'text-black/30'
+                    }`}>Semantic Matches</p>
                     {[
                       { title: "The ultimate sophistication", tag: "Design Philosophy" },
                       { title: "Zen influence on Apple products", tag: "Mindset" },

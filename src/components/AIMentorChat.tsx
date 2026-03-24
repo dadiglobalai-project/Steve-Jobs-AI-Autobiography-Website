@@ -200,7 +200,7 @@ export const AIMentorChat: React.FC = () => {
   ];
 
   return (
-    <section id="mentor" className={`py-24 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-black text-black'}`}>
+    <section id="mentor" className={`py-24 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
       <div className={`container mx-auto px-6 transition-all duration-500 ${isExpanded ? 'max-w-none px-0' : 'max-w-4xl'}`}>
         {!isExpanded && (
           <div className="text-center mb-16">
