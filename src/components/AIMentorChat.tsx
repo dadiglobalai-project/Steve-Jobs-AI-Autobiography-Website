@@ -9,8 +9,6 @@ import transcripts from '../data/transcripts.json';
 import timelineEvents from '../data/timeline_events.json';
 import quotes from '../data/jobs_quotes.json';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 interface Message {
   role: 'user' | 'assistant';
   content: string;
@@ -118,7 +116,14 @@ export const AIMentorChat: React.FC = () => {
     playSFX('click');
 
     try {
-      const context = `
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+        throw new Error("API_KEY_MISSING");
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
+      
+      const systemInstruction = `
         You are an AI Mentor embodying the spirit, philosophy, and communication style of Steve Jobs.
         Your goal is to provide advice and insights based on his life and career.
         Use the following data as your primary source of truth:
@@ -149,22 +154,31 @@ export const AIMentorChat: React.FC = () => {
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: [
-          { role: 'user', parts: [{ text: context }] },
-          { role: 'model', parts: [{ text: "I understand. I am ready to mentor as Steve Jobs. I will use structured formatting, including lists for steps and bold headings for narrative insights, to ensure clarity and impact." }] },
           ...messages.map(m => ({
             role: m.role === 'user' ? 'user' : 'model',
             parts: [{ text: m.content }]
           })),
           { role: 'user', parts: [{ text: userMessage }] }
         ],
+        config: {
+          systemInstruction
+        }
       });
 
       const aiResponse = response.text || "I'm sorry, I couldn't process that. Let's try again.";
       setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
       playSFX('notification');
-    } catch (error) {
+    } catch (error: any) {
       console.error("AI Error:", error);
-      setMessages(prev => [...prev, { role: 'assistant', content: "There was a glitch in the system. Even the best products have them. Let's try again." }]);
+      let errorMessage = "There was a glitch in the system. Even the best products have them. Let's try again.";
+      
+      if (error.message === "API_KEY_MISSING") {
+        errorMessage = "The Gemini API key is missing. Please ensure GEMINI_API_KEY is set in your environment variables (e.g., in Vercel's dashboard).";
+      } else if (error.message?.includes("API_KEY_INVALID")) {
+        errorMessage = "The provided Gemini API key is invalid. Please check your key in the environment variables.";
+      }
+      
+      setMessages(prev => [...prev, { role: 'assistant', content: errorMessage }]);
     } finally {
       setIsLoading(false);
     }

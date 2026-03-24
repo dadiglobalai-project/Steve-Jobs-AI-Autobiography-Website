@@ -4,8 +4,6 @@ import { useAudio } from './AudioProvider';
 import { useTheme } from './ThemeProvider';
 import { ArrowRight } from 'lucide-react';
 import iconic from '../images/Steve.png';
-import heroBg from '../images/heroBg.png'
-import mobileHeroBg from '../images/mobileHeroBg.png'
 
 export const Hero: React.FC = () => {
   const { playSFX } = useAudio();
@@ -29,7 +27,7 @@ export const Hero: React.FC = () => {
       <div className="absolute inset-0 z-0">
         <motion.img 
           key="desktop-bg"
-          src={heroBg}
+          src="/images/heroBg.png"
           alt="Hero Background Desktop" 
           initial={{ opacity: 0 }}
           animate={{ opacity: isMobile ? 0 : 1 }}
@@ -38,7 +36,7 @@ export const Hero: React.FC = () => {
         />
         <motion.img 
           key="mobile-bg"
-          src={mobileHeroBg}
+          src="/images/mobileHeroBg.png"
           alt="Hero Background Mobile" 
           initial={{ opacity: 0 }}
           animate={{ opacity: isMobile ? 1 : 0 }}

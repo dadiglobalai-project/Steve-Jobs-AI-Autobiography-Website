@@ -8,8 +8,6 @@ import transcripts from '../data/transcripts.json';
 import timelineEvents from '../data/timeline_events.json';
 import quotes from '../data/jobs_quotes.json';
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
-
 interface AISearchProps {
   isOpen: boolean;
   onClose: () => void;
@@ -29,7 +27,14 @@ export const AISearch: React.FC<AISearchProps> = ({ isOpen, onClose }) => {
     playSFX('click');
 
     try {
-      const context = `
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+        throw new Error("API_KEY_MISSING");
+      }
+
+      const ai = new GoogleGenAI({ apiKey });
+
+      const systemInstruction = `
         You are an intelligent search assistant for the Steve Jobs AI Autobiography.
         Based on the user's query, you should provide a summary and identify related content from the following data:
         
@@ -49,18 +54,24 @@ export const AISearch: React.FC<AISearchProps> = ({ isOpen, onClose }) => {
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: [
-          { role: 'user', parts: [{ text: context }] },
-          { role: 'model', parts: [{ text: "I will provide search results in the requested JSON format." }] },
           { role: 'user', parts: [{ text: query }] }
         ],
-        config: { responseMimeType: "application/json" }
+        config: { 
+          responseMimeType: "application/json",
+          systemInstruction
+        }
       });
 
       const data = JSON.parse(response.text);
       setResults(data);
       playSFX('notification');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Search Error:", error);
+      if (error.message === "API_KEY_MISSING") {
+        setResults({ summary: "The Gemini API key is missing. Please ensure GEMINI_API_KEY is set in your environment variables." });
+      } else {
+        setResults({ summary: "I'm sorry, I encountered an error while searching. Please try again later." });
+      }
     } finally {
       setIsLoading(false);
     }
