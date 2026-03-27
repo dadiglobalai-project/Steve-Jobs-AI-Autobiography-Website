@@ -27,8 +27,8 @@ export const AISearch: React.FC<AISearchProps> = ({ isOpen, onClose }) => {
     playSFX('click');
 
     try {
-      const apiKey = process.env.GEMINI_API_KEY;
-      if (!apiKey || apiKey === 'MY_GEMINI_API_KEY') {
+      const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
+      if (!apiKey) {
         throw new Error("API_KEY_MISSING");
       }
 

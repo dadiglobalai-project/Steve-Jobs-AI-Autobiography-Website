@@ -149,7 +149,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className={`lg:hidden fixed inset-x-0 top-20 bottom-0 z-40 backdrop-blur-xl ${theme === 'dark' ? 'bg-black/95' : 'bg-white/95'}`}
           >
-            <div className="container mx-auto px-6 py-12 flex flex-col gap-8">
+            <div className={`container mx-auto px-6 py-12 flex flex-col gap-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'} backdrop-blur-xl`} >
               {navItems.map((item, index) => (
                 <motion.div
                   key={item.path}

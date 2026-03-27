@@ -1,15 +1,18 @@
 import React, { useEffect, useRef } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { ArrowLeft, ExternalLink } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Sparkles } from 'lucide-react';
 import { useTheme } from '../components/ThemeProvider';
 import { Story1974 } from '../components/Story1974';
 import { Story1976 } from '../components/Story1976';
+import { Story1984 } from '../components/Story1984';
+import { Story2001 } from '../components/Story2001';
 import timelineEvents from '../data/timeline_events.json';
 
 export const MilestoneDetail: React.FC = () => {
   const { year } = useParams<{ year: string }>();
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
 
   const heroRef = useRef<HTMLDivElement>(null);
@@ -48,28 +51,61 @@ export const MilestoneDetail: React.FC = () => {
   return (
     <div 
       ref={containerRef}
-      className={`min-h-screen pt-8 pb-20 transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}
+      className={`min-h-screen transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}
     >
-      <div className="max-w-6xl mx-auto px-6">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          className="mb-6"
-        >
-          <Link 
-            to={`/journey#${milestone.year}`} 
-            className={`inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black'}`}
+      {year === '1974' ? (
+        <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mb-6"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Journey
-          </Link>
-        </motion.div>
-
-        {year === '1974' ? (
+            <Link 
+              to={`/journey#${milestone.year}`} 
+              className={`inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black'}`}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Journey
+            </Link>
+          </motion.div>
           <Story1974 />
-        ) : year === '1976' ? (
+        </div>
+      ) : year === '1976' ? (
+        <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mb-6"
+          >
+            <Link 
+              to={`/journey#${milestone.year}`} 
+              className={`inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black'}`}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Journey
+            </Link>
+          </motion.div>
           <Story1976 />
-        ) : (
+        </div>
+      ) : year === '1984' ? (
+        <Story1984 />
+      ) : year === '2001' ? (
+        <Story2001 />
+      ) : (
+        <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="mb-6"
+          >
+            <Link 
+              to={`/journey#${milestone.year}`} 
+              className={`inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black'}`}
+            >
+              <ArrowLeft className="w-4 h-4" />
+              Back to Journey
+            </Link>
+          </motion.div>
           <div 
             ref={heroRef}
             tabIndex={-1}
@@ -120,8 +156,8 @@ export const MilestoneDetail: React.FC = () => {
               <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-t from-black/60 to-transparent' : 'bg-gradient-to-t from-white/40 to-transparent'}`} />
             </motion.div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 };
