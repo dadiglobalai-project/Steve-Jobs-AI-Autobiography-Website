@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
@@ -106,6 +106,16 @@ export const Story1984: React.FC = () => {
     offset: ["start start", "end end"]
   });
 
+  // Preload images
+  useEffect(() => {
+    backgrounds.forEach(bg => {
+      if (!bg.isVideo) {
+        const img = new Image();
+        img.src = bg.url;
+      }
+    });
+  }, [backgrounds]);
+
   // Parallax and Scale effects
   const scale = useTransform(scrollYProgress, [0, 1], [1, shouldReduceMotion ? 1 : 1.15]);
   const parallax = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -50]);
@@ -188,7 +198,7 @@ export const Story1984: React.FC = () => {
         {/* Floating Dust Particles */}
         {!shouldReduceMotion && <FloatingDust />}
 
-        {backgrounds.map((bg) => (
+        {backgrounds.map((bg, index) => (
           <motion.div 
             key={bg.id}
             style={{ opacity: bg.opacity, scale, y: parallax, willChange: 'opacity' }}
@@ -204,6 +214,7 @@ export const Story1984: React.FC = () => {
               <img 
                 src={bg.url} 
                 alt={bg.alt} 
+                loading={index === 0 ? "eager" : "lazy"}
                 className="w-full h-full object-cover"
                 style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
                 referrerPolicy="no-referrer"

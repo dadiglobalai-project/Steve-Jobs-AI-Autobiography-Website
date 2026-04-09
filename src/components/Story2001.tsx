@@ -1,4 +1,4 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
@@ -78,6 +78,14 @@ export const Story2001: React.FC = () => {
     offset: ["start start", "end end"]
   });
 
+  // Preload images
+  useEffect(() => {
+    backgrounds.forEach(bg => {
+      const img = new Image();
+      img.src = bg.url;
+    });
+  }, [backgrounds]);
+
   // Parallax and Scale effects
   const scale = useTransform(scrollYProgress, [0, 1], [1, shouldReduceMotion ? 1 : 1.15]);
   const parallax = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -50]);
@@ -154,6 +162,7 @@ export const Story2001: React.FC = () => {
             <img 
               src={bg.url} 
               alt={bg.alt}
+              loading={i === 0 ? "eager" : "lazy"}
               className="w-full h-full object-cover grayscale opacity-40"
               referrerPolicy="no-referrer"
             />

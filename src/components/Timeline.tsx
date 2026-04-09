@@ -51,6 +51,17 @@ export const Timeline: React.FC = () => {
   const location = useLocation();
 
   useEffect(() => {
+    // Preload milestone images
+    timelineEvents.forEach(event => {
+      const img = new Image();
+      img.src = event.image;
+    });
+    // Preload header image
+    const headerImg = new Image();
+    headerImg.src = HEADER_IMAGE;
+  }, []);
+
+  useEffect(() => {
     const hash = location.hash.replace('#', '');
     if (hash) {
       const element = document.getElementById(hash);
