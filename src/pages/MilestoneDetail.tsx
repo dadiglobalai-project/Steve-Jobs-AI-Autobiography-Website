@@ -6,7 +6,11 @@ import { useTheme } from '../components/ThemeProvider';
 import { Story1974 } from '../components/Story1974';
 import { Story1976 } from '../components/Story1976';
 import { Story1984 } from '../components/Story1984';
+import { Story1985 } from '../components/Story1985';
+import { Story1997 } from '../components/Story1997';
 import { Story2001 } from '../components/Story2001';
+import { Story2007 } from '../components/Story2007';
+import { Story2011 } from '../components/Story2011';
 import timelineEvents from '../data/timeline_events.json';
 
 export const MilestoneDetail: React.FC = () => {
@@ -54,43 +58,23 @@ export const MilestoneDetail: React.FC = () => {
       className={`min-h-screen transition-colors duration-500 ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}
     >
       {year === '1974' ? (
-        <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="mb-6"
-          >
-            <Link 
-              to={`/journey#${milestone.year}`} 
-              className={`inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black'}`}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Journey
-            </Link>
-          </motion.div>
+        <div className="w-full">
           <Story1974 />
         </div>
       ) : year === '1976' ? (
-        <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            className="mb-6"
-          >
-            <Link 
-              to={`/journey#${milestone.year}`} 
-              className={`inline-flex items-center gap-2 text-xs font-mono uppercase tracking-widest transition-colors ${theme === 'dark' ? 'text-white/50 hover:text-white' : 'text-black/50 hover:text-black'}`}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Journey
-            </Link>
-          </motion.div>
-          <Story1976 />
-        </div>
+        <Story1976 />
       ) : year === '1984' ? (
         <Story1984 />
+      ) : year === '1985' ? (
+        <Story1985 />
+      ) : year === '1997' ? (
+        <Story1997 />
       ) : year === '2001' ? (
         <Story2001 />
+      ) : year === '2007' ? (
+        <Story2007 />
+      ) : year === '2011' ? (
+        <Story2011 />
       ) : (
         <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
           <motion.div

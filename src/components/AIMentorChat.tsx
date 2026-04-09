@@ -256,7 +256,7 @@ export const AIMentorChat: React.FC = () => {
           {/* Chat Messages */}
           <div 
             ref={scrollRef}
-            className="flex-1 overflow-y-auto p-8 space-y-6 custom-scrollbar"
+            className="flex-1 overflow-y-auto p-2 space-y-6 custom-scrollbar"
           >
             {messages.map((msg, i) => (
               <motion.div

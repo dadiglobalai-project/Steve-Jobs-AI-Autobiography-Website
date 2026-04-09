@@ -100,14 +100,14 @@ export const Timeline: React.FC = () => {
           className="max-w-4xl mx-auto"
         >
           <div className={`mb-6 text-[10px] font-mono uppercase tracking-[0.6em] transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/40'}`}>
-            The Visionary's Path
+            A Life of Big Ideas
           </div>
           <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-[0.85] mb-8">
-            The Journey of <br />
-            a <span className="font-medium italic">Visionary</span>
+            The Story of <br />
+            a <span className="font-medium italic">Dreamer</span>
           </h1>
           <p className={`text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-gray-700'}`}>
-            Walk through the setbacks, breakthroughs, and revolutions that changed everything.
+            Follow the story of a man who never stopped dreaming and changed the world one idea at a time.
           </p>
         </motion.div>
       </div>

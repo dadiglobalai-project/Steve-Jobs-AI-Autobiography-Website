@@ -1,276 +1,486 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef, useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
+import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-import { Quote, Zap, Map, Sparkles, BookOpen, Layers, Target, Cpu, TrendingUp, Sunrise } from 'lucide-react';
+
+interface SectionProps {
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Section: React.FC<SectionProps> = ({ children, className = "" }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { amount: 0.3 });
+  const shouldReduceMotion = useReducedMotion();
+
+  return (
+    <section
+      ref={ref}
+      className={`min-h-screen flex items-center justify-center relative px-6 py-24 ${className}`}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
+        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
+        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+        className="max-w-3xl w-full z-10"
+      >
+        {children}
+      </motion.div>
+    </section>
+  );
+};
+
+const FloatingDust: React.FC = () => {
+  const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => ({
+    id: i,
+    size: Math.random() * 3 + 1,
+    x: Math.random() * 100,
+    y: Math.random() * 100,
+    duration: Math.random() * 20 + 10,
+    delay: Math.random() * -20,
+  })), []);
+
+  return (
+    <div className="absolute inset-0 z-[3] pointer-events-none overflow-hidden">
+      {particles.map((p) => (
+        <motion.div
+          key={p.id}
+          initial={{ x: `${p.x}%`, y: `${p.y}%`, opacity: 0 }}
+          animate={{ 
+            y: [`${p.y}%`, `${p.y - 10}%`, `${p.y}%`],
+            opacity: [0, 0.15, 0]
+          }}
+          transition={{ 
+            duration: p.duration, 
+            repeat: Infinity, 
+            delay: p.delay,
+            ease: "easeInOut"
+          }}
+          className="absolute bg-white rounded-full blur-[1px]"
+          style={{ width: p.size, height: p.size }}
+        />
+      ))}
+    </div>
+  );
+};
 
 export const Story1976: React.FC = () => {
   const { theme } = useTheme();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const shouldReduceMotion = useReducedMotion();
+  const lastSectionRef = useRef(null);
+  const isLastSectionInView = useInView(lastSectionRef, { amount: 0.1 });
+  
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"]
+  });
 
-  const sections = [
-    {
-      id: 'garage',
-      icon: <Target className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-2xl font-light leading-relaxed mb-8">
-            In a quiet suburban garage in Los Altos, California, a revolution began.
-          </p>
-          <p className="text-xl font-light opacity-80 leading-relaxed mb-8">
-            No grand office. No corporate funding. Just a wooden workbench, scattered components, and two young men who believed they could change the world.
-          </p>
-          <div className={`p-8 border-l-2 mb-8 ${theme === 'dark' ? 'border-white/20 bg-white/5' : 'border-black/20 bg-black/5'}`}>
-            <p className="text-2xl italic font-serif">
-              Steve Jobs saw possibility. Steve Wozniak saw how to build it.
-            </p>
-          </div>
-          <p className="text-lg font-light opacity-70 leading-relaxed">
-            Between vision and engineering, Apple was born.
-          </p>
-        </>
-      ),
-      image: "https://tse4.mm.bing.net/th/id/OIP.eBTQnfHkc8W7I0papNgN4QHaFh?w=819&h=611&rs=1&pid=ImgDetMain&o=7&rm=3",
-      accent: "from-blue-500/20 to-transparent"
+  // Parallax and Scale effects
+  const scale = useTransform(scrollYProgress, [0, 1], [1, shouldReduceMotion ? 1 : 1.15]);
+  const parallax = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -50]);
+  
+  // Dynamic Light Leak effect
+  const lightLeakX = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
+  const lightLeakOpacity = useTransform(scrollYProgress, [0, 0.4, 0.6, 1], [0.1, 0.2, 0.15, 0.05]);
+  const lightLeakRotate = useTransform(scrollYProgress, [0, 1], [0, 45]);
+
+  // Dynamic 14-stage background mapping for exact synchronization
+  // We have 14 sections, so the scroll range is divided into 13 intervals (0 to 13)
+  const totalSections = 14;
+  const step = 1 / (totalSections - 1); 
+  const fade = step * 0.4; // 40% of section height for crossfade
+
+  // Helper to create range: [startFade, fullStart, fullEnd, endFade]
+  const createRange = (startIdx: number, endIdx: number = startIdx) => {
+    const start = startIdx * step;
+    const end = (endIdx + 1) * step;
+    
+    const r1 = startIdx === 0 ? 0 : Math.max(0, start - fade);
+    const r2 = startIdx === 0 ? 0 : start;
+    const r3 = endIdx === totalSections - 1 ? 1 : Math.min(1, end - fade);
+    const r4 = endIdx === totalSections - 1 ? 1 : Math.min(1, end);
+    
+    return [r1, r2, r3, r4];
+  };
+
+  const bgIntro = useTransform(scrollYProgress, createRange(0), [0, 1, 1, 0]);
+  const bgAtariSearch = useTransform(scrollYProgress, createRange(1), [0, 1, 1, 0]);
+  const bgAtariGrid = useTransform(scrollYProgress, createRange(2), [0, 1, 1, 0]);
+  const bgAtariNight = useTransform(scrollYProgress, createRange(3), [0, 1, 1, 0]);
+  const bgPhilosophy = useTransform(scrollYProgress, createRange(4), [0, 1, 1, 0]);
+  const bgIndiaTravel = useTransform(scrollYProgress, createRange(5), [0, 1, 1, 0]);
+  const bgIndiaReality = useTransform(scrollYProgress, createRange(6), [0, 1, 1, 0]);
+  const bgIndiaMonk = useTransform(scrollYProgress, createRange(7), [0, 1, 1, 0]);
+  const bgIntuition = useTransform(scrollYProgress, createRange(8), [0, 1, 1, 0]);
+  const bgSynthesis = useTransform(scrollYProgress, createRange(9), [0, 1, 1, 0]);
+  const bgApplePhilosophy = useTransform(scrollYProgress, createRange(10, 11), [0, 1, 1, 0]);
+  const bgConclusion = useTransform(scrollYProgress, createRange(12, 13), [0, 1, 1, 0]);
+
+  const backgrounds = useMemo(() => [
+    { 
+      id: 'intro', 
+      opacity: bgIntro, 
+      url: 'https://cdn.britannica.com/02/24402-050-2C2345B1/Steven-Jobs-Apple-I-Stephen-Wozniak-circuit-1976.jpg', 
+      alt: 'Steve Jobs and Steve Wozniak with the Apple I' 
     },
-    {
-      id: 'partnership',
-      icon: <Zap className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            Steve Jobs and Steve Wozniak were not an obvious match, but they were perfectly complementary.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            Wozniak was the technical mastermind. He loved building computers for the sake of elegance and efficiency. Circuits were his language. Precision was his instinct.
-          </p>
-          <p className="text-lg font-light opacity-80 leading-relaxed mb-6">
-            Jobs was different. He was not an engineer, but he understood something deeper. He understood people, experience, and potential.
-          </p>
-          <div className="flex items-center gap-4 p-6 rounded-2xl bg-indigo-500/10 border border-indigo-500/20">
-            <Quote className="w-8 h-8 text-indigo-400 shrink-0" />
-            <p className="text-xl font-medium text-indigo-300">
-              “Why not sell it?” Jobs asked when Wozniak designed a personal computer for fun.
-            </p>
-          </div>
-          <p className="text-lg font-light opacity-70 mt-6">
-            That question changed everything. Wozniak saw a hobby. Jobs saw a product.
-          </p>
-        </>
-      ),
-      image: "https://tse1.mm.bing.net/th/id/OIP.XX-bYYfLPGChCH6gdwal2QHaJk?rs=1&pid=ImgDetMain&o=7&rm=3",
-      reverse: true
+    { 
+      id: 'partnership', 
+      opacity: bgAtariSearch, 
+      url: 'https://i.pinimg.com/originals/4a/4d/e4/4a4de44d99cf8bf6dc40804aedeb4ef8.jpg', 
+      alt: 'Macro shot of a circuit board representing the technical foundation', 
+      grayscale: true 
     },
-    {
-      id: 'founding',
-      icon: <Layers className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            In 1976, Apple Computer was officially founded in the Jobs family garage. The setup was simple. A small team. Limited resources. No safety net.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            To raise capital, Jobs sold his Volkswagen van. Wozniak sold his prized HP calculator. Together, they gathered enough to build their first product. They called it the Apple I.
-          </p>
-          <p className="text-lg font-light opacity-70 leading-relaxed mb-6">
-            Unlike most computers at the time, the Apple I came as a fully assembled circuit board. Customers did not need to solder components themselves. This made it more accessible, though still far from user-friendly by modern standards.
-          </p>
-          <p className="text-lg font-light leading-relaxed">
-            Their first major break came when a local retailer, The Byte Shop, agreed to buy 50 units. But there was a catch: they had to deliver fully assembled boards. The pressure was immediate. The risk was real. Yet they delivered.
-          </p>
-        </>
-      ),
-      image: "https://tse3.mm.bing.net/th/id/OIP.P0-Y4niqBvFy0Dl-ClKUYAHaDH?rs=1&pid=ImgDetMain&o=7&rm=3",
-      fullWidth: true
+    { 
+      id: 'apple-i', 
+      opacity: bgAtariGrid, 
+      url: 'https://www.cnet.com/a/img/resize/aff640d4af3437cca6adb207baf0727bdf62f44d/hub/2018/06/06/f3ff78d1-2369-4bc6-8529-2434aba685c7/apple1.jpg?auto=webp&fit=crop&height=675&width=1200', 
+      alt: 'The original Apple I computer' 
     },
-    {
-      id: 'statement',
-      icon: <Cpu className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            The Apple I was not just a machine. It was a statement. At a time when computers were seen as tools for hobbyists or large institutions, Apple introduced the idea that individuals could own and use them.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            Still, it was only the beginning. Jobs already wanted more.
-          </p>
-          <div className={`p-8 border-l-2 mb-8 ${theme === 'dark' ? 'border-white/20 bg-white/5' : 'border-black/20 bg-black/5'}`}>
-            <p className="text-2xl italic font-serif">
-              “This is not enough,” he pushed. “We can make it better. We can make it for everyone.”
-            </p>
-          </div>
-          <p className="text-lg font-light opacity-80 leading-relaxed">
-            Wozniak went back to work.
-          </p>
-        </>
-      ),
-      image: "https://picsum.photos/seed/apple-one/800/1000"
+    { 
+      id: 'garage-work', 
+      opacity: bgAtariNight, 
+      url: 'https://tse2.mm.bing.net/th/id/OIP.4OmHbss9Gn9Dn2hZwfHs2QHaEK?rs=1&pid=ImgDetMain&o=7&rm=3', 
+      alt: 'Dark, focused workspace representing the garage days' 
     },
-    {
-      id: 'apple-ii',
-      icon: <Sparkles className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            The Apple II was where Apple truly came to life. Released in 1977, it was one of the first highly successful mass-produced personal computers. Unlike its predecessor, it was designed with the user in mind.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            It came in a plastic case. It supported color graphics. It was ready to use out of the box. This was Jobs’ influence.
-          </p>
-          <p className="text-lg font-light opacity-80 leading-relaxed mb-6">
-            He believed that technology should not intimidate people. It should invite them in. Wozniak engineered the system with remarkable efficiency. Jobs shaped the experience, insisting on design, packaging, and simplicity.
-          </p>
-          <p className="text-lg font-light leading-relaxed">
-            Together, they created something new. Not just a computer, but a product people wanted to own.
-          </p>
-        </>
-      ),
-      image: "https://picsum.photos/seed/apple-two/1200/800",
-      reverse: true
+    { 
+      id: 'founding', 
+      opacity: bgPhilosophy, 
+      url: 'https://tse4.mm.bing.net/th/id/OIP.gvGH3Pq2fQ2Q3bueJ3c7EgHaFB?w=768&h=521&rs=1&pid=ImgDetMain&o=7&rm=3', 
+      alt: 'Minimalist architecture representing the foundation of a company', 
+      grayscale: true 
     },
-    {
-      id: 'markkula',
-      icon: <TrendingUp className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            As Apple gained traction, it needed more than talent. It needed structure and funding. Enter Mike Markkula.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            A former Intel executive, Markkula invested $250,000 into Apple and brought business discipline to the young company. He helped write Apple’s first business plan and defined its core philosophy.
-          </p>
-          <div className={`p-8 rounded-3xl mb-6 ${theme === 'dark' ? 'bg-zinc-800 text-white' : 'bg-zinc-100 text-black'}`}>
-            <ul className="space-y-4 text-sm font-mono uppercase tracking-widest opacity-80">
-              <li>• Focus on the customer experience</li>
-              <li>• Make products accessible and appealing</li>
-              <li>• Build a lasting brand, not just a device</li>
-            </ul>
-          </div>
-          <p className="text-lg font-light opacity-80 leading-relaxed">
-            Markkula believed Apple could become a Fortune 500 company. At the time, it sounded ambitious. Soon, it became reality.
-          </p>
-        </>
-      ),
-      image: "https://picsum.photos/seed/business-plan/1200/600",
-      fullWidth: true
+    { 
+      id: 'apple-ii-launch', 
+      opacity: bgIndiaTravel, 
+      url: '', 
+      alt: 'Clean, minimalist design representing the Apple II' 
     },
-    {
-      id: 'philosophy',
-      icon: <Sunrise className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            Even in its earliest days, Apple was not just about hardware. It was about how people interacted with technology.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            Jobs pushed relentlessly for simplicity. He challenged complexity at every level. If something felt confusing, it had to be redesigned.
-          </p>
-          <div className="flex items-center gap-4 p-6 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 mb-6">
-            <Quote className="w-8 h-8 text-emerald-400 shrink-0" />
-            <p className="text-xl font-medium text-emerald-300">
-              “Make it simple,” he insisted. “Make it intuitive.”
-            </p>
-          </div>
-          <p className="text-lg font-light opacity-80 leading-relaxed">
-            This mindset reflected everything he had learned from his earlier experiences, including his exposure to minimalism and Eastern philosophy. The result was a new standard: technology that felt approachable, design that felt intentional.
-          </p>
-        </>
-      ),
-      image: "https://picsum.photos/seed/minimal-design/800/1000"
+    { 
+      id: 'vision-personal', 
+      opacity: bgIndiaReality, 
+      url: 'https://i.pinimg.com/736x/3b/c2/fd/3bc2fd5cc704c98339316a4d95048327.jpg', 
+      alt: 'A person using a computer in a home setting' 
     },
-    {
-      id: 'growth',
-      icon: <TrendingUp className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            Apple’s growth was rapid. By 1980, just four years after its founding, Apple went public. It became one of the most successful IPOs of its time.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            What started in a garage had become a company valued in the hundreds of millions. But beyond numbers, something more important had been established.
-          </p>
-          <p className="text-xl font-light opacity-80 leading-relaxed">
-            A belief. That individuals could use technology to create, think, and express themselves.
-          </p>
-        </>
-      ),
-      image: "https://picsum.photos/seed/ipo-growth/1200/800",
-      reverse: true
+    { 
+      id: 'revolution-start', 
+      opacity: bgIndiaMonk, 
+      url: 'https://www.thegeekpub.com/wp-content/uploads/2016/07/Transferring-files-to-an-Apple-IIe-0001.jpg', 
+      alt: 'Abstract digital grid representing the start of a revolution' 
     },
-    {
-      id: 'conclusion',
-      icon: <Sunrise className="w-6 h-6" />,
-      content: (
-        <>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            The founding of Apple marked a turning point in history. It shifted computing from a specialized field into a personal experience. It introduced the idea that technology should serve people, not the other way around.
-          </p>
-          <p className="text-lg font-light leading-relaxed mb-6">
-            And at the center of it all was a partnership built on contrast. Vision and engineering. Intuition and logic. Simplicity and complexity.
-          </p>
-          <p className="text-2xl font-light tracking-tight mt-8">
-            Together, they created something that would not just succeed. It would redefine an industry.
-          </p>
-        </>
-      ),
-      image: "https://storage.googleapis.com/webdesignledger.pub.network/WDL/maxresdefault.jpg",
-      fullWidth: true
-    }
-  ];
+    { 
+      id: 'intuition-design', 
+      opacity: bgIntuition, 
+      url: 'https://blaz-project.com/wp-content/uploads/2023/05/apple_2_kitchen_hero_1-1024x574.jpg', 
+      alt: 'Abstract fluid motion representing design intuition' 
+    },
+    { 
+      id: 'legacy-beginnings', 
+      opacity: bgSynthesis, 
+      url: 'https://i.pinimg.com/originals/17/e8/b1/17e8b1d43a48b4eef195da2e9a23f067.jpg', 
+      alt: 'Steve Jobs in his early years' 
+    },
+    { 
+      id: 'future-vision', 
+      opacity: bgApplePhilosophy, 
+      url: 'https://s3.amazonaws.com/s3.timetoast.com/public/uploads/photos/12034923/apple-hq-1981.jpg', 
+      alt: 'Global connectivity and the future of tech' 
+    },
+    { 
+      id: 'conclusion-1976', 
+      opacity: bgConclusion, 
+      url: 'https://e00-expansion.uecdn.es/assets/multimedia/imagenes/2016/10/05/14756486337723.jpg', 
+      alt: 'Bright, open office representing the future' 
+    },
+  ], [bgIntro, bgAtariSearch, bgAtariGrid, bgAtariNight, bgPhilosophy, bgIndiaTravel, bgIndiaReality, bgIndiaMonk, bgIntuition, bgSynthesis, bgApplePhilosophy, bgConclusion]);
 
   return (
-    <div className="space-y-32">
-      {sections.map((section, index) => (
-        <motion.section
-          key={section.id}
-          initial={{ opacity: 0, y: 50 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, delay: 0.1 }}
-          className={`relative ${section.fullWidth ? 'max-w-none' : 'max-w-6xl mx-auto px-6'}`}
-        >
-          <div className={`grid grid-cols-1 ${section.fullWidth ? 'lg:grid-cols-1' : 'lg:grid-cols-2'} gap-16 items-center`}>
+    <div ref={containerRef} className="relative w-full">
+      {/* Sticky Background Layer */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        {/* Global Grain Overlay */}
+        <div className="absolute inset-0 z-[5] opacity-[0.03] mix-blend-overlay pointer-events-none animate-noise bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+        
+        {/* Dynamic Light Leak */}
+        <motion.div 
+          style={{ x: lightLeakX, opacity: lightLeakOpacity, rotate: lightLeakRotate }}
+          className="absolute -inset-[50%] z-[4] pointer-events-none bg-gradient-to-tr from-orange-500/20 via-transparent to-blue-500/20 blur-[120px]"
+        />
+
+        {/* Floating Dust Particles */}
+        {!shouldReduceMotion && <FloatingDust />}
+
+        {backgrounds.map((bg) => (
+          <motion.div 
+            key={bg.id}
+            style={{ opacity: bg.opacity, scale, y: parallax }}
+            className="absolute inset-0 bg-cover bg-center"
+          >
+            {/* Contextual Overlay for Readability */}
+            <div className={`absolute inset-0 z-10 ${theme === 'dark' 
+              ? 'bg-gradient-to-b from-black/90 via-black/60 to-black/90' 
+              : 'bg-gradient-to-b from-white/90 via-white/60 to-white/90'}`} 
+            />
             
-            {/* Content Side */}
-            <div className={`${section.reverse ? 'lg:order-2' : ''} ${section.fullWidth ? 'max-w-4xl mx-auto text-center px-6' : ''}`}>
-              <div className={`prose prose-lg ${theme === 'dark' ? 'prose-invert' : ''} max-w-none`}>
-                {section.content}
-              </div>
-            </div>
+            <img 
+              src={bg.url} 
+              alt={bg.alt} 
+              className={`w-full h-full object-cover ${bg.grayscale ? 'grayscale' : ''}`}
+              style={{ 
+                imageRendering: 'auto', 
+                backfaceVisibility: 'hidden',
+                filter: bg.grayscale ? 'grayscale(100%) contrast(1.1)' : 'none'
+              }}
+              referrerPolicy="no-referrer"
+            />
 
-            {/* Image Side */}
-            <div className={`${section.reverse ? 'lg:order-1' : ''} ${section.fullWidth ? 'mt-16' : ''}`}>
-              <motion.div
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.4 }}
-                className={`relative rounded-3xl overflow-hidden shadow-2xl ${section.fullWidth ? 'aspect-[21/9]' : 'aspect-[4/5]'}`}
-              >
-                <img 
-                  src={section.image} 
-                  alt="1976 Milestone"
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-                <div className={`absolute inset-0 bg-gradient-to-t ${theme === 'dark' ? 'from-black/60' : 'from-white/20'} to-transparent`} />
-              </motion.div>
-            </div>
+            {/* Atari Specific Overlay: Carbon Fiber + Scanlines */}
+            {(bg.id.includes('atari')) && (
+              <>
+                <div className="absolute inset-0 opacity-[0.05] z-20 pointer-events-none bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]" />
+                <div className="absolute inset-0 z-20 pointer-events-none atari-flicker bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.15)_50%),linear-gradient(90deg,rgba(255,0,0,0.03),rgba(0,255,0,0.02),rgba(0,0,255,0.03))] bg-[length:100%_2px,3px_100%]" />
+              </>
+            )}
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Narrative Content */}
+      <div className="relative z-10">
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: 0.8 }}
+          className="absolute top-8 left-6 z-50"
+        >
+          <Link 
+            to="/journey#1974" 
+            className={`inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.2em] transition-all px-5 py-2.5 rounded-full backdrop-blur-md border ${theme === 'dark' ? 'text-white/80 hover:text-white border-white/20 bg-white/10 hover:bg-white/20' : 'text-black/80 hover:text-black border-black/20 bg-black/10 hover:bg-black/20'}`}
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Journey
+          </Link>
+        </motion.div>
+
+        {/* Intro */}
+        <Section>
+          <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">1975 to 1976</span>
+          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-12">
+            The Birth of a <br />
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1.2, duration: 1 }}
+              className="italic serif bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent"
+            >
+              Revolution
+            </motion.span>
+          </h1>
+          <p className="text-xl md:text-3xl font-light leading-relaxed opacity-80 max-w-2xl">
+            By 1976, Steve had returned with a new kind of focus. His journey to India and his time at Atari had come together into one bold idea: to take the power of computers away from big companies and put it into the hands of everyday people.
+          </p>
+        </Section>
+
+        {/* The Partnership */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Meeting of Minds</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            The start of this change was the friendship between Steve Jobs and Steve Wozniak. Wozniak was a true genius with electronics. He could build complex things in a simple and efficient way that few others could. Jobs, on the other hand, was the dreamer who saw how these machines could change people's lives.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            They were an unlikely pair. One was a quiet, brilliant engineer, and the other was a bold and exciting dreamer. But together, they had the perfect skills to change the world. Wozniak built the technology, and Jobs gave it a heart.
+          </p>
+        </Section>
+
+        {/* The Apple I */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The First Machine</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            In 1975, Wozniak built a small computer that could connect to a screen and show text. This was a new and big idea at a time when most computers were huge and used paper. When Jobs saw it, he didn't just see a hobby project. He saw the first step toward a new world.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            He talked Wozniak into selling the machine. They called it the Apple I. It was just a simple circuit board without a case or keyboard, but it was the first computer that anyone could actually own and use.
+          </p>
+        </Section>
+
+        {/* The Garage */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Garage</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            Since they didn't have money for an office, the two Steves started their work in the Jobs family garage. It was a simple start for a company that would one day change the world. The garage was full of the smell of tools and the energy of two young men who believed they were doing something special.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            They worked late into the night, building circuit boards by hand and dreaming of a future where everyone had a computer on their desk. The garage was more than just a workspace. It was a place where new ideas could grow.
+          </p>
+        </Section>
+
+        {/* Founding Apple */}
+        <Section>
+          <div className="text-center">
+            <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">April 1, 1976</span>
+            <h2 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">Apple Computer <br /><span className="italic serif">is Born</span></h2>
+            <p className="text-xl md:text-2xl font-light leading-relaxed opacity-70 max-w-2xl mx-auto">
+              On April Fools' Day in 1976, Steve Jobs, Steve Wozniak, and Ronald Wayne signed the papers that officially started Apple Computer. It was a bold name for a tech company. It was simple, friendly, and full of life.
+            </p>
           </div>
-        </motion.section>
-      ))}
+        </Section>
 
-      {/* References Section */}
-      <motion.section
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        className="max-w-4xl mx-auto px-6 py-20 border-t border-white/10"
-      >
-        <ul className="space-y-4 text-sm opacity-50 font-light">
-          <li>Isaacson, Walter. <em>Steve Jobs</em>. Simon & Schuster, 2011.</li>
-          <li>Wozniak, Steve. <em>iWoz: Computer Geek to Cult Icon</em>. W. W. Norton & Company, 2006.</li>
-          <li>Levy, Steven. <em>Hackers: Heroes of the Computer Revolution</em>. Doubleday, 1984.</li>
-          <li>Apple Computer, Inc. Early business plans and marketing materials (1976-1980).</li>
-          <li>Computer History Museum. "The Apple I and Apple II."</li>
-        </ul>
-      </motion.section>
+        {/* The Byte Shop */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The First Big Order</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            Their first major break came when a local shop owner ordered fifty Apple I computers. But he wanted them fully built. Jobs, who never gave up, got the parts he needed by promising to pay for them after the computers were sold.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            They spent the next month working day and night in the garage, building and testing every part. It was a hard start in the business world, but it proved they could do what they promised.
+          </p>
+        </Section>
+
+        {/* The Apple II */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Breakthrough: Apple II</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            While the Apple I was for people who loved electronics, the Apple II was for everyone. Launched in 1977, it was the first computer to come in a nice plastic case with a keyboard. It could even show colors. It was a finished product, not just a machine.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            Jobs cared about every detail, from the color of the case to how quiet it was. He wanted the Apple II to feel right in a living room, not just a lab. This was the moment the personal computer truly arrived.
+          </p>
+        </Section>
+
+        {/* The Vision */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Computer for Everyone</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            The success of the Apple II came from a simple belief: that technology should help people be more creative. Jobs saw the computer as a tool that could help people do more than they ever thought possible.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            He wanted to create tools that were so easy to use they felt natural. This vision became the heart of Apple.
+          </p>
+        </Section>
+
+        {/* Design Intuition */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Beauty of Simplicity</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            Even in these early days, Jobs' love for design was clear. He believed that the back of a cabinet should be as beautiful as the front, even if no one ever saw it. He brought the lessons of Zen and the simple style of Atari into everything Apple made.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            He understood that simplicity isn't just about having less. It's about making things clear. Every curve and every line was carefully chosen to create a sense of balance.
+          </p>
+        </Section>
+
+        {/* The Start of the Revolution */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Spark That Grew</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            By the end of 1976, Apple was no longer just a garage project. It was a company that was growing fast. They had moved into their first real office, and the world was starting to notice the two young men from Los Altos.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            The revolution had begun. It wasn't just about parts and software. It was about a new way of thinking about how we use technology.
+          </p>
+        </Section>
+
+        {/* Building the Future */}
+        <Section>
+          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Building the Future</h2>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+            Jobs was no longer just a dreamer. He was a builder. He had found his purpose in combining technology with art. He was ready to lead a team and build the future he imagined.
+          </p>
+          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            The lessons of the past, including the simple style of Atari and the ideas from India, were now the foundation of a new kind of company.
+          </p>
+        </Section>
+
+        {/* Conclusion */}
+        <Section className="pb-48">
+          <div ref={lastSectionRef} className="space-y-12">
+            <p className="text-xl md:text-4xl font-light leading-relaxed opacity-90">
+              The start of Apple in 1976 was the moment the dreamer became a builder, and the world was never the same again.
+            </p>
+            <div className="space-y-6">
+              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A focus on the individual.</p>
+              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A love for great design.</p>
+              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A belief in what seems impossible.</p>
+            </div>
+            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 max-w-2xl">
+              These were the values that would guide Apple for years to come. The revolution was just getting started.
+            </p>
+          </div>
+        </Section>
+      </div>
+
+      {/* Fixed Scroll to Top Arrow */}
+      <AnimatePresence>
+        {isLastSectionInView && (
+          <motion.button
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.8 }}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className={`fixed bottom-12 right-8 z-50 w-12 h-12 rounded-full border flex items-center justify-center transition-colors backdrop-blur-md ${theme === 'dark' ? 'border-white/20 bg-black/40 text-white hover:border-white/40' : 'border-black/20 bg-white/40 text-black hover:border-black/40'}`}
+            aria-label="Scroll to top"
+          >
+            <ArrowUp className="w-5 h-5" />
+          </motion.button>
+        )}
+      </AnimatePresence>
+
+      {/* Progress Indicator */}
+      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden md:flex flex-col gap-4 items-center">
+        <div className={`h-32 w-px ${theme === 'dark' ? 'bg-white/10' : 'bg-black/10'} relative overflow-hidden`}>
+          <motion.div 
+            style={{ scaleY: scrollYProgress, originY: 0 }}
+            className={`absolute inset-0 ${theme === 'dark' ? 'bg-white' : 'bg-black'}`}
+          />
+        </div>
+        <span className="text-[10px] font-mono uppercase tracking-widest vertical-text opacity-40">Scroll</span>
+      </div>
+
+      <style dangerouslySetInnerHTML={{ __html: `
+        .serif { font-family: 'Georgia', serif; }
+        .vertical-text { writing-mode: vertical-rl; }
+        
+        @keyframes noise {
+          0%, 100% { transform: translate(0, 0); }
+          10% { transform: translate(-1%, -1%); }
+          20% { transform: translate(1%, 1%); }
+          30% { transform: translate(-2%, -2%); }
+          40% { transform: translate(2%, 2%); }
+          50% { transform: translate(-1%, 1%); }
+          60% { transform: translate(1%, -1%); }
+          70% { transform: translate(2%, -2%); }
+          80% { transform: translate(-2%, 2%); }
+          90% { transform: translate(1%, 1%); }
+        }
+        
+        .animate-noise {
+          animation: noise 0.5s steps(10) infinite;
+        }
+
+        @keyframes flicker {
+          0% { opacity: 0.03; }
+          5% { opacity: 0.05; }
+          10% { opacity: 0.03; }
+          15% { opacity: 0.04; }
+          25% { opacity: 0.03; }
+          30% { opacity: 0.06; }
+          35% { opacity: 0.03; }
+          40% { opacity: 0.04; }
+          45% { opacity: 0.03; }
+          60% { opacity: 0.05; }
+          70% { opacity: 0.03; }
+          80% { opacity: 0.04; }
+          90% { opacity: 0.03; }
+          100% { opacity: 0.05; }
+        }
+        
+        .atari-flicker {
+          animation: flicker 0.15s infinite;
+        }
+      `}} />
     </div>
   );
 };
