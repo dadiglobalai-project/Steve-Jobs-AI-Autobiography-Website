@@ -106,16 +106,6 @@ export const Story1984: React.FC = () => {
     offset: ["start start", "end end"]
   });
 
-  // Preload images
-  useEffect(() => {
-    backgrounds.forEach(bg => {
-      if (!bg.isVideo) {
-        const img = new Image();
-        img.src = bg.url;
-      }
-    });
-  }, [backgrounds]);
-
   // Parallax and Scale effects
   const scale = useTransform(scrollYProgress, [0, 1], [1, shouldReduceMotion ? 1 : 1.15]);
   const parallax = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -50]);
@@ -181,6 +171,16 @@ export const Story1984: React.FC = () => {
     { id: 'exit', opacity: bg16, url: 'https://photos5.appleinsider.com/gallery/58273-118731-000-lede-Steve-Jobs-1984-xl.jpg', alt: 'Turning Point' },
     { id: 'human', opacity: bg17, url: 'https://cdn.ipadizate.com/2024/06/el-macintosh-de-1984-un-gran-producto-en-la-historia-de-apple.jpg', alt: 'The Most Human Technology' },
   ], [bg0, bg1, bg2, bg3, bg4, bg5, bg6, bg7, bg8, bg9, bg10, bg11, bg12, bg13, bg14, bg15, bg16, bg17]);
+
+  // Preload images
+  useEffect(() => {
+    backgrounds.forEach(bg => {
+      if (!bg.isVideo) {
+        const img = new Image();
+        img.src = bg.url;
+      }
+    });
+  }, [backgrounds]);
 
   return (
     <div ref={containerRef} className="relative w-full">

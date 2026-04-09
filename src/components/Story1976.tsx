@@ -77,14 +77,6 @@ export const Story1976: React.FC = () => {
     offset: ["start start", "end end"]
   });
 
-  // Preload images
-  useEffect(() => {
-    backgrounds.forEach(bg => {
-      const img = new Image();
-      img.src = bg.url;
-    });
-  }, [backgrounds]);
-
   // Parallax and Scale effects
   const scale = useTransform(scrollYProgress, [0, 1], [1, shouldReduceMotion ? 1 : 1.15]);
   const parallax = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -50]);
@@ -202,6 +194,14 @@ export const Story1976: React.FC = () => {
       alt: 'Bright, open office representing the future' 
     },
   ], [bgIntro, bgAtariSearch, bgAtariGrid, bgAtariNight, bgPhilosophy, bgIndiaTravel, bgIndiaReality, bgIndiaMonk, bgIntuition, bgSynthesis, bgApplePhilosophy, bgConclusion]);
+
+  // Preload images
+  useEffect(() => {
+    backgrounds.forEach(bg => {
+      const img = new Image();
+      img.src = bg.url;
+    });
+  }, [backgrounds]);
 
   return (
     <div ref={containerRef} className="relative w-full">

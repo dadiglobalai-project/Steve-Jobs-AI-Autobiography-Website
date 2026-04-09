@@ -79,14 +79,6 @@ export const Story1997: React.FC = () => {
     offset: ["start start", "end end"]
   });
 
-  // Preload images
-  useEffect(() => {
-    backgrounds.forEach(bg => {
-      const img = new Image();
-      img.src = bg.url;
-    });
-  }, [backgrounds]);
-
   // Parallax and Scale effects
   const scale = useTransform(scrollYProgress, [0, 1], [1, shouldReduceMotion ? 1 : 1.15]);
   const parallax = useTransform(scrollYProgress, [0, 1], [0, shouldReduceMotion ? 0 : -50]);
@@ -150,6 +142,14 @@ export const Story1997: React.FC = () => {
   const bgTransforms = backgrounds.map((_, i) => 
     useTransform(scrollYProgress, createRange(i), [0, 1, 1, 0])
   );
+
+  // Preload images
+  useEffect(() => {
+    backgrounds.forEach(bg => {
+      const img = new Image();
+      img.src = bg.url;
+    });
+  }, [backgrounds]);
 
   return (
     <div ref={containerRef} className={`relative ${theme === 'dark' ? 'bg-black text-white' : 'bg-white text-black'}`}>
