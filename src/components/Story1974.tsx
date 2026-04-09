@@ -214,7 +214,7 @@ export const Story1974: React.FC = () => {
         {backgrounds.map((bg) => (
           <motion.div 
             key={bg.id}
-            style={{ opacity: bg.opacity, scale, y: parallax }}
+            style={{ opacity: bg.opacity, scale, y: parallax, willChange: 'opacity' }}
             className="absolute inset-0 bg-cover bg-center"
           >
             {/* Contextual Overlay for Readability */}

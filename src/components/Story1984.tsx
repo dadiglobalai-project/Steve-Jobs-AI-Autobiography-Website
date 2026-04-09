@@ -88,7 +88,7 @@ const VideoBackground: React.FC<{ src: string; opacity: any }> = ({ src, opacity
       muted 
       loop 
       playsInline
-      className="w-full h-full object-cover transition-opacity duration-700"
+      className="w-full h-full object-cover"
       style={{ backfaceVisibility: 'hidden' }}
     />
   );
@@ -191,7 +191,7 @@ export const Story1984: React.FC = () => {
         {backgrounds.map((bg) => (
           <motion.div 
             key={bg.id}
-            style={{ opacity: bg.opacity, scale, y: parallax }}
+            style={{ opacity: bg.opacity, scale, y: parallax, willChange: 'opacity' }}
             className="absolute inset-0 bg-cover bg-center"
           >
             <div className={`absolute inset-0 z-10 ${theme === 'dark' 
@@ -204,7 +204,7 @@ export const Story1984: React.FC = () => {
               <img 
                 src={bg.url} 
                 alt={bg.alt} 
-                className="w-full h-full object-cover transition-opacity duration-700"
+                className="w-full h-full object-cover"
                 style={{ imageRendering: 'auto', backfaceVisibility: 'hidden' }}
                 referrerPolicy="no-referrer"
               />

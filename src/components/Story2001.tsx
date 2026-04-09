@@ -146,7 +146,8 @@ export const Story2001: React.FC = () => {
             style={{ 
               opacity: bgTransforms[i],
               scale,
-              y: parallax
+              y: parallax,
+              willChange: 'opacity'
             }}
             className="absolute inset-0"
           >
