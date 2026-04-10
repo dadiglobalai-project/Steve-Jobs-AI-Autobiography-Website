@@ -3,33 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-
-interface SectionProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Section: React.FC<SectionProps> = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.3 });
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      ref={ref}
-      className={`min-h-screen flex items-center justify-center relative px-6 py-24 ${className}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-3xl w-full z-10"
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-};
+import { Section } from './Section';
 
 const FloatingDust: React.FC = () => {
   const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => ({
@@ -208,7 +182,7 @@ export const Story1997: React.FC = () => {
       {/* Content */}
       <div className="relative z-10">
         {/* Hero Section */}
-        <Section className="items-center text-center">
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt} className="items-center text-center">
           <motion.span 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -217,7 +191,7 @@ export const Story1997: React.FC = () => {
           >
             July 1997
           </motion.span>
-          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-12">
+          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             The <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -232,156 +206,156 @@ export const Story1997: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-xl md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70"
+            className="text-lg md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70"
           >
             By the summer of 1997, Apple was in deep trouble and close to failing completely. The company that had once started the personal computer revolution was now lost. It was losing hundreds of millions of dollars every few months and had no clear plan for the future. Its products were a confusing mess, with too many models that no one really wanted. Many people thought Apple would not survive the year without a miracle.
           </motion.p>
         </Section>
 
         {/* Section 2: The Return */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Surprise Return</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[4]?.url} alt={backgrounds[4]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Surprise Return</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             At this desperate time, something amazing happened. Steve Jobs returned to the company he had started in a garage twenty years earlier. He came back because Apple bought NeXT, the company he had built while he was away. At first, he was just an advisor, but he soon became the interim CEO. He jokingly called himself the 'iCEO.' Even though it was supposed to be temporary, his strong presence and quick decisions showed that he was ready to change Apple's future.
           </p>
         </Section>
 
         {/* Section 3: Lost Identity */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"Finding Apple's Soul"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[6]?.url} alt={backgrounds[6]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-lg md:text-5xl font-light italic serif mb-4 md:mb-6">"Finding Apple's Soul"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               From his first day back, Jobs saw exactly what was wrong. He saw that Apple had become boring and lost its way. It was trying to do too many things and failing at all of them. He believed that the company was drowning in its own rules and slow ways. Jobs knew that to save Apple, he had to cut away everything that wasn't needed and return to the simple values that made it great.
             </p>
           </div>
         </Section>
 
         {/* Section 4: The Grid */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Doing More with Less</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[9]?.url} alt={backgrounds[9]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Doing More with Less</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In one of his first big moves, Jobs cut most of Apple’s ongoing projects. He turned dozens of confusing models into a simple grid of four products. There were two for home use and two for professional use. His idea was simple. Instead of making many average products, Apple would focus all its energy on making just a few great ones that could change the world.
           </p>
         </Section>
 
         {/* Section 5: Shock and Focus */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Changing the Culture</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[11]?.url} alt={backgrounds[11]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Changing the Culture</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             This sudden change shocked everyone at Apple. Projects were canceled, teams were changed, and the company's goals were reset almost overnight. Jobs was firm and focused on being the best. He walked through the offices and asked one simple question over and over: "Is this product great?" If the answer was not a clear yes, the project was stopped right then and there.
           </p>
         </Section>
 
         {/* Section 6: Rebuilding Culture */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A New Way to Think</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[13]?.url} alt={backgrounds[13]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A New Way to Think</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             While fixing the products, Jobs also worked to change how people felt about working at Apple. He wanted to bring back the excitement and the pride of being creative. He encouraged people to think in new ways and take risks. This belief, that technology should help people be creative, became the heart of the company again. Later that year, Apple launched the famous "Think Different" ads to show the world that it was back to its roots.
           </p>
         </Section>
 
         {/* Section 7: Celebrating Changers */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Honoring the Dreamers</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[14]?.url} alt={backgrounds[14]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Honoring the Dreamers</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The ads were different because they didn't talk about technical details or the products themselves. Instead, they celebrated the 'crazy ones,' the people who changed history with their big ideas. The message was clear. Apple was for the dreamers and the doers, for those who dared to be different and believed they could change the world.
           </p>
         </Section>
 
         {/* Section 8: Meaning Over Features */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"The Heart of the Message"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[16]?.url} alt={backgrounds[16]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"The Heart of the Message"</h2>
+            <p className="text-sm md:text-xl font-light leading-relaxed opacity-70">
               This was Steve Jobs at his best. He knew that people don't just buy features. They connect with meaning and shared values. The ads did more than just sell computers. They helped fix Apple’s image and reminded everyone that Apple was about more than just machines. It was a company built on passion and bold thinking.
             </p>
           </div>
         </Section>
 
         {/* Section 9: Personal Vision */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Shared Goal</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[18]?.url} alt={backgrounds[18]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Shared Goal</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In many ways, the "Think Different" ads reflected Jobs’ own life as someone who always challenged the rules. He believed in the power of a single great idea. By sharing this message, he got the whole company to follow his vision. But he also knew that good ads were not enough. Apple needed great products that lived up to the promise.
           </p>
         </Section>
 
         {/* Section 10: Design and Simplicity */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Focus on Beauty</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[19]?.url} alt={backgrounds[19]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Focus on Beauty</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             He focused on design and simplicity. He believed these were the keys to making technology easy for everyone to use. He felt that products should be powerful but also beautiful objects that people would love to look at. During this time, he started working closely with a young designer named Jony Ive. Together, they worked in a secret studio to create a new generation of devices that felt human and new.
           </p>
         </Section>
 
         {/* Section 11: The iMac */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">1998: The iMac</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[20]?.url} alt={backgrounds[20]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">1998: The iMac</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In 1998, their work led to the iMac, a machine that changed everything. It looked completely different from the boring beige boxes of the time. It had a colorful, see-through case that looked friendly. It was simple to set up and use right away. For millions of people, the iMac made computers feel fun and easy to use.
           </p>
         </Section>
 
         {/* Section 12: Success and Life */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Fresh Start</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[23]?.url} alt={backgrounds[23]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Fresh Start</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The iMac was a huge hit right away. It showed that Apple was back and could lead the industry again. It brought new energy and money to the company. Jobs kept making bold choices. He fixed the software and focused on making sure every product worked perfectly. His rule was that everything had to feel like a complete and finished thought.
           </p>
         </Section>
 
         {/* Section 13: Leadership Style */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Leading with Focus</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[25]?.url} alt={backgrounds[25]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Leading with Focus</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             His style was still very intense and demanding. He expected perfection and moved the company fast. But he was also more focused and disciplined than before. The years he spent away from Apple had changed him. He had learned from his failures and knew how to focus his energy on what really mattered.
           </p>
         </Section>
 
         {/* Section 14: Recovery */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Recovery</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[26]?.url} alt={backgrounds[26]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Recovery</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Slowly, things began to get better. Sales went up, the stock price rose, and people felt excited again. Apple was no longer just trying to keep up. It was leading the way. The return of Steve Jobs and the saving of Apple is known as one of the greatest turnarounds in business history.
           </p>
         </Section>
 
         {/* Section 15: The Foundation */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Building for the Future</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[29]?.url} alt={backgrounds[29]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Building for the Future</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The changes he made during this time built a strong base for Apple’s future. The values he brought back, such as a focus on design and simplicity, would guide the company for years. These ideas would later lead to the iPod, the iPhone, and the iPad, changing how we all live and communicate.
           </p>
         </Section>
 
         {/* Section 16: Restoring Thinking */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"A New Way of Creating"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[30]?.url} alt={backgrounds[30]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"A New Way of Creating"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               Looking back, Jobs’ return was about more than just saving a company. It was about bringing back a way of thinking that put people first. He reminded everyone that great products come from clear ideas and the courage to make bold choices.
             </p>
           </div>
         </Section>
 
         {/* Section 17: Second Chance */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Second Chance</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[31]?.url} alt={backgrounds[31]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Second Chance</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             For Steve Jobs, this was a rare second chance to finish what he started. He came back to the place where he began as a young man, but he was now a different person. He was wiser and had a clearer vision. This time, he didn't just save Apple. He turned it into one of the most loved and important companies in the world.
           </p>
         </Section>
 
         {/* Section 18: Conclusion */}
-        <Section className="pb-48">
-          <div ref={lastSectionRef} className="space-y-12">
-            <p className="text-xl md:text-3xl font-light leading-relaxed opacity-90">
+        <Section image={backgrounds[30]?.url} alt={backgrounds[30]?.alt} className="pb-48">
+          <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
+            <p className="text-lg md:text-3xl font-light leading-relaxed opacity-90">
               The turnaround was complete. Apple was no longer just a company trying to survive. It was a leader in innovation and a symbol of creativity. The journey that started in a garage had come full circle, leading to a future that was brighter than anyone expected.
             </p>
             <div className="space-y-4">
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Simplicity.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Focus.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Innovation.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Simplicity.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Focus.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Innovation.</p>
             </div>
           </div>
         </Section>

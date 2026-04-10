@@ -3,33 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-
-interface SectionProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Section: React.FC<SectionProps> = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.3 });
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      ref={ref}
-      className={`min-h-screen flex items-center justify-center relative px-6 py-24 ${className}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-3xl w-full z-10"
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-};
+import { Section } from './Section';
 
 const FloatingDust: React.FC = () => {
   const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => ({
@@ -202,7 +176,7 @@ export const Story1985: React.FC = () => {
       {/* Content */}
       <div className="relative z-10">
         {/* Hero Section */}
-        <Section className="items-center text-center">
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt} className="items-center text-center">
           <motion.span 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -211,7 +185,7 @@ export const Story1985: React.FC = () => {
           >
             September 1985
           </motion.span>
-          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-12">
+          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             The <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -226,210 +200,210 @@ export const Story1985: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-xl md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70"
+            className="text-lg md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70"
           >
             In the late summer of 1985, only a year after the Macintosh was born, Steve Jobs faced a difficult time. The company he had started and poured his soul into was moving forward into a new era. It was a time that no longer had a place for him as its leader.
           </motion.p>
         </Section>
 
         {/* Section 2: Tension */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Trouble at Apple</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[1]?.url} alt={backgrounds[1]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Trouble at Apple</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             For months, there had been trouble in Apple's offices. Jobs had very high standards and radical ideas that often clashed with the more traditional styles of his colleagues. John Sculley, the man Jobs had hired to lead the company, was now on the opposite side of a bitter fight for control.
           </p>
         </Section>
 
         {/* Section 3: The Vote */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"The Board's Decision"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[2]?.url} alt={backgrounds[2]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-lg md:text-5xl font-light italic serif mb-4 md:mb-6">"The Board's Decision"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               In the end, the company’s board of directors chose to side with Sculley. In a move that shocked everyone, Jobs was stripped of his power. Feeling alone and betrayed, he made the hard choice to leave Apple shortly after.
             </p>
           </div>
         </Section>
 
         {/* Section 4: Turning Point */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A New Beginning</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[3]?.url} alt={backgrounds[3]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A New Beginning</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             To most people, this looked like the end of a great career. But for Steve Jobs, leaving Apple was not an ending. It was a major turning point. He would later say that this time was very hard for his pride, but it also set his creative spirit free.
           </p>
         </Section>
 
         {/* Section 5: New Beginning */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Starting Over</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[4]?.url} alt={backgrounds[4]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Starting Over</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Suddenly, he was free from the weight of running a huge company. He had a rare chance to start over with the light feeling of being a beginner again. Jobs did not hide away. Instead, he moved forward with the same passion he had in the early days in his garage.
           </p>
         </Section>
 
         {/* Section 6: Founding NeXT */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Starting NeXT</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[5]?.url} alt={backgrounds[5]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Starting NeXT</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             He refused to stay idle and put his energy into a bold new project. Later that same year, he started NeXT. This company was dedicated to building the next generation of powerful computers that would change what machines could do.
           </p>
         </Section>
 
         {/* Section 7: NeXT Vision */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Learning and Research</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[6]?.url} alt={backgrounds[6]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Learning and Research</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             His goal for NeXT was clear. He wanted to create the best machines for schools and research. These powerful computers were designed to help students and scientists explore new ideas. Jobs believed that by giving people better tools, he could help them think in more creative ways.
           </p>
         </Section>
 
         {/* Section 8: NeXT Design */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Focus on Design</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[7]?.url} alt={backgrounds[7]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Focus on Design</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             At NeXT, Jobs showed the same focus on every detail that he had with the Macintosh. He cared deeply about how the computers looked. He wanted the hardware to be powerful but also elegant and beautiful.
           </p>
         </Section>
 
         {/* Section 9: NeXT Complexity */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Simple but Powerful</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[8]?.url} alt={backgrounds[8]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Simple but Powerful</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             He pushed his team to create software that was easy for anyone to use, even if the work behind it was very complex and new.
           </p>
         </Section>
 
         {/* Section 10: NeXT Challenges */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Hard Times in the Market</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[9]?.url} alt={backgrounds[9]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Hard Times in the Market</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             However, NeXT soon ran into trouble. While the computers were very advanced, they were also very expensive. Most schools and universities could not afford them. This led to low sales and a hard fight to stay in business.
           </p>
         </Section>
 
         {/* Section 11: Not a Failure */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"Not a Failure"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[10]?.url} alt={backgrounds[10]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"Not a Failure"</h2>
+            <p className="text-sm md:text-xl font-light leading-relaxed opacity-70">
               Even with these money problems, NeXT was not a failure. The new ideas and software built during those years would one day save Apple itself.
             </p>
           </div>
         </Section>
 
         {/* Section 12: Foundation for OS */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Strong Base</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[11]?.url} alt={backgrounds[11]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Strong Base</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The advanced software created at NeXT would eventually become the base for the systems used in Macs and iPhones today. At the time, however, that future was still far away. Jobs just kept building and learning from his mistakes.
           </p>
         </Section>
 
         {/* Section 13: Lucasfilm */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Big Choice</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[12]?.url} alt={backgrounds[12]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Big Choice</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             While working on NeXT, Jobs made another big choice. In 1986, he spent $10 million to buy a small group of computer experts from Lucasfilm, the company that made Star Wars.
           </p>
         </Section>
 
         {/* Section 14: Pixar Potential */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A New Way to Tell Stories</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[13]?.url} alt={backgrounds[13]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A New Way to Tell Stories</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             This small group was finding new ways to make pictures using computers. Jobs saw something special in their work. He began to believe that computers could be more than just tools for data. They could be a new way to tell amazing stories.
           </p>
         </Section>
 
         {/* Section 15: Founding Pixar */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Starting Pixar</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[14]?.url} alt={backgrounds[14]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Starting Pixar</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs used his own money to support the team and started a new company called Pixar. In the beginning, Pixar made high-end hardware and short films. It was very different from the famous studio it is today, and the company lost a lot of money for many years.
           </p>
         </Section>
 
         {/* Section 16: Commitment */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Staying the Course</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[15]?.url} alt={backgrounds[15]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Staying the Course</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Even as the company lost money, Jobs did not give up. He continued to fund Pixar through its hardest times, even when it wasn't clear if it would ever succeed. This showed a more patient side of his leadership. He was willing to take big risks and wait years for a vision he believed in.
           </p>
         </Section>
 
         {/* Section 17: 1995: Toy Story */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">1995: Toy Story</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[16]?.url} alt={backgrounds[16]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">1995: Toy Story</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In 1995, that long wait finally paid off. Pixar released Toy Story, the first full-length movie made entirely with computers. The movie was a huge hit. It was a technical marvel, but it was also a moving story that people all over the world loved.
           </p>
         </Section>
 
         {/* Section 18: Changing Animation */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A New World of Movies</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[17]?.url} alt={backgrounds[17]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A New World of Movies</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Toy Story changed movies forever. It proved that computers could be used to create characters and stories that people really cared about. After this success, Pixar went on to make many more great films and became one of the most loved studios in the world.
           </p>
         </Section>
 
         {/* Section 19: Leadership at Pixar */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Leading with Heart</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[18]?.url} alt={backgrounds[18]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Leading with Heart</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs played a big part in Pixar's success. He gave the team guidance, protected their creative freedom, and made the deal with Disney. Under his care, Pixar grew from a struggling startup into a world leader in both art and business.
           </p>
         </Section>
 
         {/* Section 20: Contrast */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Time of Change</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[19]?.url} alt={backgrounds[19]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Time of Change</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Looking back, this decade of Jobs’ life was full of change. He had been pushed out of Apple, but in that time, he built two new companies that would change both technology and movies forever.
           </p>
         </Section>
 
         {/* Section 21: Growth as a Leader */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Growing as a Leader</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[20]?.url} alt={backgrounds[20]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Growing as a Leader</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             This time showed how much he had grown. NeXT gave him the space to mature. He became more patient and more focused on building great teams. Pixar showed his ability to see potential in new areas and his support for human creativity.
           </p>
         </Section>
 
         {/* Section 22: Return */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Return</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[21]?.url} alt={backgrounds[21]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Return</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Eventually, these disparate experiences would converge in a way no one could have predicted. In 1997, a struggling Apple acquired NeXT, bringing Jobs back to the company he had co-founded. The innovative software developed at NeXT became the bedrock for Apple’s future success. Simultaneously, Pixar’s meteoric rise continued, culminating in its acquisition by Disney in 2006, which made Jobs the largest individual shareholder of the Walt Disney Company.
           </p>
         </Section>
 
         {/* Section 23: Wilderness */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Vital Time</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[22]?.url} alt={backgrounds[22]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Vital Time</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The years away from Apple were not a setback. They were a vital time of rebuilding and discovery. This part of his life showed that even big failures can lead to growth, and that taking a new path can lead to lasting success.
           </p>
         </Section>
 
         {/* Section 24: Courage */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Courage to Start Over</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[23]?.url} alt={backgrounds[23]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Courage to Start Over</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             For Steve Jobs, this long and hard chapter was not about what he lost. Instead, it was about the power of learning and the courage to start over from nothing to build something even better.
           </p>
         </Section>
 
         {/* Section 25: Conclusion */}
-        <Section className="pb-48">
-          <div ref={lastSectionRef} className="space-y-12">
-            <p className="text-xl md:text-3xl font-light leading-relaxed opacity-90">
+        <Section image={backgrounds[24]?.url} alt={backgrounds[24]?.alt} className="pb-48">
+          <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
+            <p className="text-lg md:text-3xl font-light leading-relaxed opacity-90">
               In doing so, he did more than just change his own story. He helped shape the future of how we use technology and how we experience the magic of storytelling for years to come.
             </p>
             <div className="space-y-4">
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Persistence.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Vision.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Storytelling.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Persistence.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Vision.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Storytelling.</p>
             </div>
           </div>
         </Section>

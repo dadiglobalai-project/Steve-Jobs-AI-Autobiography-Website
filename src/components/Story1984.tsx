@@ -3,33 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-
-interface SectionProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Section: React.FC<SectionProps> = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.3 });
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      ref={ref}
-      className={`min-h-screen flex items-center justify-center relative px-6 py-24 ${className}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-3xl w-full z-10"
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-};
+import { Section } from './Section';
 
 const FloatingDust: React.FC = () => {
   const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => ({
@@ -242,9 +216,9 @@ export const Story1984: React.FC = () => {
         </motion.div>
 
         {/* Intro */}
-        <Section>
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt}>
           <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">January 24, 1984</span>
-          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-12">
+          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             The Computer <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -255,15 +229,15 @@ export const Story1984: React.FC = () => {
               for Everyone
             </motion.span>
           </h1>
-          <p className="text-xl md:text-2xl font-light leading-relaxed opacity-70">
+          <p className="text-lg md:text-2xl font-light leading-relaxed opacity-70">
             In the cold winter of 1984, Apple introduced the Macintosh to a world that didn't yet know how much it needed a change. It wasn't just another computer. It was a new and poetic way of thinking about how people use machines. It was a bold statement that technology should help people, not be something to fear.
           </p>
         </Section>
 
         {/* Section 2: Unfamiliar Era */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Scary Time for Tech</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[1]?.url} alt={backgrounds[1]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Scary Time for Tech</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In the late 1970s and early 1980s, computers were a mystery to most people. They were cold and scary. Machines like the Apple II and the IBM PC were powerful, but they required users to learn and type strange commands into a blank screen. There were no friendly icons to help, no easy mouse to use, and very little care for the beginner.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 italic serif">
@@ -272,9 +246,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 3: Xerox PARC */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A New Idea at Xerox</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[2]?.url} alt={backgrounds[2]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A New Idea at Xerox</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             After visiting Xerox in 1979, Jobs saw something that changed his mind forever. He saw a computer screen with windows, icons, and a small device called a mouse. Instead of typing hard commands, users could just point at what they wanted and click. It was easy and smooth.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -283,19 +257,19 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 4: Mass Market */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"A Vision for Everyone"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[3]?.url} alt={backgrounds[3]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-lg md:text-5xl font-light italic serif mb-4 md:mb-6">"A Vision for Everyone"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               He went back to Apple full of energy, ready to bring this new idea to everyone. He knew that for computers to truly change the world, they had to be easy for everyone to use. They couldn't just be for experts and engineers anymore.
             </p>
           </div>
         </Section>
 
         {/* Section 5: The Macintosh Project */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Secret Project</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[4]?.url} alt={backgrounds[4]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Secret Project</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The Macintosh project started as a small, secret effort at Apple. Jobs soon took over the team and used his own vision to shape it. He believed that computers should be simple, friendly, and even fun to use in daily life.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -304,9 +278,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 6: Relentless Craftsmanship */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Great Work</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[5]?.url} alt={backgrounds[5]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Great Work</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs pushed his team hard, often working late into the night to get every detail right. He wanted the Macintosh to be small enough for a desk, quiet enough to not be annoying, and beautiful enough to look like a piece of art. He wanted it to turn on fast and be ready to use right away.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -315,9 +289,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 7: Intense Leadership */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Doing the Impossible</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[6]?.url} alt={backgrounds[6]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Doing the Impossible</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             His style of leading was very intense. He could be hard to work with, but he also knew how to inspire people to do their best work. He challenged his team to do things they never thought were possible.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 italic serif">
@@ -326,9 +300,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 8: The Heart of Macintosh */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A New Way to See</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[7]?.url} alt={backgrounds[7]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A New Way to See</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             One of his most important ideas was to use pictures, windows, and menus as the heart of the Macintosh. Instead of typing code, users could click on icons and move things around the screen as if they were real objects.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -337,9 +311,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 9: The Mouse */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Mouse</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[8]?.url} alt={backgrounds[8]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Mouse</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs also insisted on including the mouse, even though many people at the time didn't know what it was. He believed that once people tried pointing and clicking, they would never want to go back to just using a keyboard.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -348,9 +322,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 10: The Challenge */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Big Reveal</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[9]?.url} alt={backgrounds[9]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Big Reveal</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs knew that building a great product was only half the battle. He also had to show it to the world in a way they would never forget.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 italic serif">
@@ -359,9 +333,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 11: The "1984" Ad */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Famous Ad</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[10]?.url} alt={backgrounds[10]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Famous Ad</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             This led to the famous '1984' Super Bowl ad. It was a short film that changed advertising forever. Directed by Ridley Scott, the ad showed a gray and boring world being broken by a runner in bright clothes. The message was clear: Apple would break the power of big, cold companies that tried to control people.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -370,9 +344,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 12: The Symbol */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Standing Out</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[11]?.url} alt={backgrounds[11]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Standing Out</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The ad only ran once, but everyone talked about it. It showed that Apple was a bold and creative company that cared about the individual.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -381,9 +355,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 13: The Launch */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">"Hello, I'm Macintosh"</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[12]?.url} alt={backgrounds[12]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">"Hello, I'm Macintosh"</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             When the Macintosh was launched in January 1984, Jobs let the computer speak for itself. In front of a quiet and excited crowd, the Macintosh showed text and used a computer voice to say hello. It was a moment of pure magic.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 italic serif">
@@ -392,9 +366,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 14: A New Companion */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Creative Partner</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[13]?.url} alt={backgrounds[13]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Creative Partner</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The Macintosh changed how people felt about computers. They were no longer just cold machines, but creative partners. For the first time, people could use a computer without any special training. They could draw, write, and organize their work in a way that felt natural.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -403,9 +377,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 15: Modern Standard */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Setting the Standard</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[14]?.url} alt={backgrounds[14]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Setting the Standard</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             This change had a huge effect on the world. The ideas behind the Macintosh, such as simple design and easy use, became the standard for all computers.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -414,9 +388,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 16: Deeply Personal */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Tech and Art</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[15]?.url} alt={backgrounds[15]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Tech and Art</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             For Steve Jobs, the Macintosh was very personal. It showed his belief that technology and art should come together to make life better. It showed his love for simplicity and his focus on every detail.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 italic serif">
@@ -425,9 +399,9 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 17: Turning Point */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Turning Point</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[16]?.url} alt={backgrounds[16]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Turning Point</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The Macintosh also marked a significant turning point in Jobs' career and life. While it established him as a visionary leader on the world stage, it also led to internal conflicts and power struggles within Apple that would eventually push him out of the company he co-founded in 1985.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -436,17 +410,17 @@ export const Story1984: React.FC = () => {
         </Section>
 
         {/* Section 18: Conclusion */}
-        <Section className="pb-48">
-          <div ref={lastSectionRef} className="space-y-12">
-            <p className="text-xl md:text-3xl font-light leading-relaxed opacity-90">
+        <Section image={backgrounds[17]?.url} alt={backgrounds[17]?.alt} className="pb-48">
+          <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
+            <p className="text-lg md:text-3xl font-light leading-relaxed opacity-90">
               Looking back, the Macintosh was much more than just a computer. It was a bold and successful step toward making technology easy and meaningful for everyone.
             </p>
             <div className="space-y-4">
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Simple design.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Easy to use.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Human technology.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Simple design.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Easy to use.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Human technology.</p>
             </div>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               At the heart of it all was Steve Jobs. He believed that the best technology is not the most complex, but the one that feels most human.
             </p>
           </div>

@@ -8,11 +8,7 @@ import { Send, User, Bot, Sparkles, Loader2, Mic, Maximize2, Minimize2, RotateCc
 import transcripts from '../data/transcripts.json';
 import timelineEvents from '../data/timeline_events.json';
 import quotes from '../data/jobs_quotes.json';
-
-interface Message {
-  role: 'user' | 'assistant';
-  content: string;
-}
+import { AIService, ChatMessage } from '../services/aiService';
 
 export const AIMentorChat: React.FC = () => {
   const { playSFX } = useAudio();
@@ -20,7 +16,7 @@ export const AIMentorChat: React.FC = () => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const recognitionRef = useRef<any>(null);
-  const [messages, setMessages] = useState<Message[]>(() => {
+  const [messages, setMessages] = useState<ChatMessage[]>(() => {
     const saved = sessionStorage.getItem('ai_mentor_messages');
     if (saved) {
       try {
@@ -116,57 +112,13 @@ export const AIMentorChat: React.FC = () => {
     playSFX('click');
 
     try {
-      const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) {
-        throw new Error("API_KEY_MISSING");
-      }
-
-      const ai = new GoogleGenAI({ apiKey });
+      const aiResponse = await AIService.generateMentorResponse(
+        userMessage,
+        messages,
+        { timeline: timelineEvents, quotes, transcripts }
+      );
       
-      const systemInstruction = `
-        You are an AI Mentor embodying the spirit, philosophy, and communication style of Steve Jobs.
-        Your goal is to provide advice and insights based on his life and career.
-        Use the following data as your primary source of truth:
-        
-        TIMELINE EVENTS:
-        ${JSON.stringify(timelineEvents)}
-        
-        QUOTES:
-        ${JSON.stringify(quotes)}
-        
-        TRANSCRIPTS:
-        ${JSON.stringify(transcripts)}
-        
-        Style Guidelines:
-        - Be direct, minimalist, and visionary.
-        - Focus on excellence, design, and "putting a ding in the universe."
-        - Use short, impactful sentences.
-        - Reference specific events from the timeline or quotes when relevant.
-        - If you don't know something, admit it, but frame it in a way that encourages the user to find their own path.
-        - CRITICAL: Structure your responses for maximum readability. 
-        - Use bulleted lists for multiple points or items.
-        - Use numbered lists for step-by-step instructions or sequences.
-        - For narrative or storytelling responses, provide a clear bolded heading (using ###) followed by the explanation.
-        - Use bold text for key concepts or emphasis.
-        - Break long paragraphs into smaller, digestible chunks.
-      `;
-
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [
-          ...messages.map(m => ({
-            role: m.role === 'user' ? 'user' : 'model',
-            parts: [{ text: m.content }]
-          })),
-          { role: 'user', parts: [{ text: userMessage }] }
-        ],
-        config: {
-          systemInstruction
-        }
-      });
-
-      const aiResponse = response.text || "I'm sorry, I couldn't process that. Let's try again.";
-      setMessages(prev => [...prev, { role: 'assistant', content: aiResponse }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: aiResponse || "I'm sorry, I couldn't process that. Let's try again." }]);
       playSFX('notification');
     } catch (error: any) {
       console.error("AI Error:", error);

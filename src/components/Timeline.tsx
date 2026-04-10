@@ -113,11 +113,11 @@ export const Timeline: React.FC = () => {
           <div className={`mb-6 text-[10px] font-mono uppercase tracking-[0.6em] transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/40'}`}>
             A Life of Big Ideas
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-[0.85] mb-8">
+          <h1 className="text-2xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-[0.9] mb-4 md:mb-8">
             The Story of <br />
             a <span className="font-medium italic">Dreamer</span>
           </h1>
-          <p className={`text-lg md:text-xl font-light max-w-2xl mx-auto leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-gray-700'}`}>
+          <p className={`text-sm md:text-xl font-light max-w-2xl mx-auto leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/60' : 'text-gray-700'}`}>
             Follow the story of a man who never stopped dreaming and changed the world one idea at a time.
           </p>
         </motion.div>
@@ -165,13 +165,23 @@ export const Timeline: React.FC = () => {
             {/* Sticky Content Display Area */}
             <div className="sticky top-0 h-screen flex flex-col justify-center pointer-events-none z-10">
             <div className={`max-w-2xl mx-auto md:mx-0 text-center md:text-left pointer-events-auto transition-opacity duration-300 ${activeIndex === -1 ? 'opacity-0' : 'opacity-100'}`}>
-                <span className={`text-[10px] font-mono uppercase tracking-[0.6em] mb-6 block transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/60'}`}>
+                {/* Mobile Milestone Image */}
+                <div className="md:hidden mb-4 rounded-xl overflow-hidden shadow-xl aspect-video border border-white/10 max-h-[25vh]">
+                  <img 
+                    src={timelineEvents[activeIndex]?.image} 
+                    alt={timelineEvents[activeIndex]?.title}
+                    className="w-full h-full object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                </div>
+
+                <span className={`text-[9px] md:text-[10px] font-mono uppercase tracking-[0.6em] mb-2 md:mb-6 block transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/60'}`}>
                   {timelineEvents[activeIndex]?.year}
                 </span>
-                <h2 className={`text-4xl md:text-6xl lg:text-7xl font-light tracking-tighter leading-tight mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+                <h2 className={`text-lg md:text-6xl lg:text-7xl font-light tracking-tighter leading-tight mb-2 md:mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
                   {timelineEvents[activeIndex]?.title}
                 </h2>
-                <p className={`text-lg md:text-xl font-light mb-10 leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>
+                <p className={`text-[10px] md:text-xl font-light mb-4 md:mb-10 leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>
                   {timelineEvents[activeIndex]?.description}
                 </p>
                 <Link

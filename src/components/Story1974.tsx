@@ -3,33 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-
-interface SectionProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Section: React.FC<SectionProps> = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.3 });
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      ref={ref}
-      className={`min-h-screen flex items-center justify-center relative px-6 py-24 ${className}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-3xl w-full z-10"
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-};
+import { Section } from './Section';
 
 const FloatingDust: React.FC = () => {
   const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => ({
@@ -188,7 +162,19 @@ export const Story1974: React.FC = () => {
       alt: 'Clean, minimalist design representing Apple philosophy' 
     },
     { 
-      id: 'conclusion', 
+      id: 'building-himself', 
+      opacity: bgConclusion, 
+      url: 'https://images.unsplash.com/photo-1499750310107-5fef28a66643?auto=format&fit=crop&w=1920&q=80', 
+      alt: 'Steve Jobs working and building his vision' 
+    },
+    { 
+      id: 'legacy-future', 
+      opacity: bgConclusion, 
+      url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80', 
+      alt: 'Digital connectivity and future legacy' 
+    },
+    { 
+      id: 'final-vision', 
       opacity: bgConclusion, 
       url: 'https://www.brandbuffet.in.th/wp-content/uploads/2018/03/Jobs.jpeg', 
       alt: 'Bright, open workspace representing the future and legacy' 
@@ -273,9 +259,9 @@ export const Story1974: React.FC = () => {
         </motion.div>
 
         {/* Intro */}
-        <Section>
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt}>
           <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">1970 to 1974</span>
-          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-12">
+          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             The Search for <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -286,15 +272,15 @@ export const Story1974: React.FC = () => {
               Meaning
             </motion.span>
           </h1>
-          <p className="text-xl md:text-3xl font-light leading-relaxed opacity-80 max-w-2xl">
+          <p className="text-lg md:text-3xl font-light leading-relaxed opacity-80 max-w-2xl">
             In the early 1970s, long before the world knew his name, Steve Jobs was a young man looking for his place in the world. He was a dreamer, driven by a strong curiosity and a feeling that the normal paths of society were too narrow for the big questions in his mind.
           </p>
         </Section>
 
         {/* Atari */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Atari Days</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[1]?.url} alt={backgrounds[1]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Atari Days</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Looking for a way to fund his curiosity, Jobs found himself at the door of Atari, a new company that was then the center of the early video game world. Working as a technician, he was surrounded by basic electronics and simple logic. The environment was tough, fast, and focused on how players reacted to the games.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -303,19 +289,19 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* Simplicity Lesson */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"The Power of Less"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[2]?.url} alt={backgrounds[2]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-lg md:text-5xl font-light italic serif mb-4 md:mb-6">"The Power of Less"</h2>
+            <p className="text-sm md:text-xl font-light leading-relaxed opacity-70">
               At Atari, simplicity was necessary because of technical limits. Engineers were challenged to build games with very few parts. This taught Jobs a big lesson: that true beauty is found not in what you add, but in what you have the courage to take away. He began to see that a design was finished not when there was nothing left to add, but when there was nothing left to remove.
             </p>
           </div>
         </Section>
 
         {/* Unusual Behavior */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Quiet of the Night</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[3]?.url} alt={backgrounds[3]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Quiet of the Night</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs was different even in the unusual halls of Atari. He asked to work the night shift, a move that allowed him to avoid the trouble of office life and focus on his work alone. In the quiet hours of the night, surrounded by parts of circuit boards, he learned how to see the heart of a problem.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -324,9 +310,9 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* Looking Beyond */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Pull of the East</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[4]?.url} alt={backgrounds[4]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Pull of the East</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Even with his success at Atari, the technical world felt like it was missing something. He began to spend his money on books that explored how people think and feel. He was interested in the teachings of Zen and the stories of India, which suggested that our inner thoughts shape the world around us.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -335,20 +321,20 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* India Decision */}
-        <Section>
+        <Section image={backgrounds[5]?.url} alt={backgrounds[5]?.alt}>
           <div className="text-center">
-            <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">1974</span>
-            <h2 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">The Journey to <br /><span className="italic serif">India</span></h2>
-            <p className="text-xl md:text-2xl font-light leading-relaxed opacity-70 max-w-2xl mx-auto">
+            <span className="text-xs font-mono uppercase tracking-[0.5em] mb-4 md:mb-6 block opacity-40">1974</span>
+            <h2 className="text-xl md:text-8xl font-light tracking-tighter mb-4 md:mb-8">The Journey to <br /><span className="italic serif">India</span></h2>
+            <p className="text-lg md:text-2xl font-light leading-relaxed opacity-70 max-w-2xl mx-auto">
               In 1974, Jobs walked away from his job at Atari, took his savings, and went to India. He wasn't looking for a vacation. He was looking for a teacher, a truth, and a way to connect his technical mind with his spiritual side.
             </p>
           </div>
         </Section>
 
         {/* Arrival & Reality */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Shock of the Real</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[6]?.url} alt={backgrounds[6]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Shock of the Real</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             India was not the peaceful place he had imagined in his books. It was a busy, loud, and often tough place for the senses. He was met with intense heat and poverty. The teacher he had traveled so far to see had passed away before he arrived.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -357,9 +343,9 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* Simpler Living */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Living Simply</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[7]?.url} alt={backgrounds[7]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Living Simply</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             He spent months traveling through the dusty plains and mountains of India. He shaved his head, wore simple clothes, and lived with only what he needed. By leaving behind the comforts of his life at home, he began to feel truly present.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -368,9 +354,9 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* Intuition */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Power of Intuition</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[8]?.url} alt={backgrounds[8]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Power of Intuition</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In India, Jobs had a very important realization: the power of intuition. He saw that while people in the West valued logical thinking, people in the East understood a more direct way of knowing. He began to see that logic could only take you so far. To create something truly new, you had to trust your gut.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -379,9 +365,9 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* The Return */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Return</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[9]?.url} alt={backgrounds[9]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Return</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             When Jobs finally returned to California, he was a changed man. He was thinner, his skin was dark from the sun, and his eyes showed a new kind of focus. He hadn't found a teacher, but he had found something even better: a sense of inner strength.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -390,9 +376,9 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* The Foundation */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A New Mix</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[10]?.url} alt={backgrounds[10]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A New Mix</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The experiences of 1974 created a unique mix in Jobs' mind. He now had the skills of an engineer and the heart of a monk. He understood how to build a machine, but he also understood why a machine should be beautiful.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -401,9 +387,9 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* Apple Philosophy */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Birth of an Idea</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[11]?.url} alt={backgrounds[11]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Birth of an Idea</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The seeds of Apple's ideas were planted in these quiet years. He believed that design is not just what something looks like, but how it works. He was obsessed with the parts of a product that people don't see. He believed that technology should be a clean and easy part of the human spirit.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -412,9 +398,9 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* Building Himself */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Building Himself</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[12]?.url} alt={backgrounds[12]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Building Himself</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Looking back, 1974 was the year Steve Jobs built the most important thing of his life: himself. Before he could lead a company or change the world, he had to find his own voice. He had to be willing to be a wanderer and to fail in the eyes of others.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -423,17 +409,17 @@ export const Story1974: React.FC = () => {
         </Section>
 
         {/* Conclusion */}
-        <Section className="pb-48">
-          <div ref={lastSectionRef} className="space-y-12">
-            <p className="text-xl md:text-4xl font-light leading-relaxed opacity-90">
+        <Section image={backgrounds[13]?.url} alt={backgrounds[13]?.alt} className="pb-48">
+          <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
+            <p className="text-lg md:text-4xl font-light leading-relaxed opacity-90">
               The journey of 1974 showed the power of following your own heart, even when it leads into the unknown.
             </p>
-            <div className="space-y-6">
-              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A love for simplicity.</p>
-              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A strong trust in intuition.</p>
-              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A deep and endless curiosity.</p>
+            <div className="space-y-4 md:space-y-6">
+              <p className="text-base md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A love for simplicity.</p>
+              <p className="text-base md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A strong trust in intuition.</p>
+              <p className="text-base md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A deep and endless curiosity.</p>
             </div>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 max-w-2xl">
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70 max-w-2xl">
               These were the ideas that the future of computers would be built on. The young man who returned from India was no longer just looking for a path; he was ready to create one.
             </p>
           </div>

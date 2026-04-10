@@ -3,33 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-
-interface SectionProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Section: React.FC<SectionProps> = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.3 });
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      ref={ref}
-      className={`min-h-screen flex items-center justify-center relative px-6 py-24 ${className}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-3xl w-full z-10"
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-};
+import { Section } from './Section';
 
 const FloatingDust: React.FC = () => {
   const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => ({
@@ -196,7 +170,7 @@ export const Story2011: React.FC = () => {
       {/* Content */}
       <div className="relative z-10">
         {/* Hero Section */}
-        <Section className="items-center text-center">
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt} className="items-center text-center">
           <motion.span 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -205,7 +179,7 @@ export const Story2011: React.FC = () => {
           >
             October 2011
           </motion.span>
-          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-12">
+          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             The <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -221,51 +195,51 @@ export const Story2011: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-xl md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70"
+            className="text-lg md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70"
           >
             On October 5, 2011, the world lost a visionary who didn't just build products, but fundamentally changed how we interact with technology and each other. Steve Jobs passed away at the age of 56, leaving behind a legacy that continues to ripple through every corner of our digital lives. His departure marked the end of an era, but his influence remains as vibrant and essential as ever.
           </motion.p>
         </Section>
 
         {/* Section 1: The Final Chapter */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Final Chapter</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[2]?.url} alt={backgrounds[2]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Final Chapter</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In August 2011, Steve Jobs stepped down as CEO of Apple, a role he had held with unparalleled intensity since his return in 1997. His health had been a subject of global concern for years, yet his resignation still felt like a seismic shift. He passed the torch to Tim Cook, ensuring that the company he co-founded in a garage would continue to thrive on the principles he had so carefully established.
           </p>
         </Section>
 
         {/* Section 2: A World Transformed */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"A World Transformed"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[1]?.url} alt={backgrounds[1]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-lg md:text-5xl font-light italic serif mb-4 md:mb-6">"A World Transformed"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               The reaction to his passing was immediate and global. From makeshift memorials at Apple Stores to tributes from world leaders and tech rivals, the message was clear: Steve Jobs was more than a businessman; he was a cultural icon. He had taken technology from the hands of hobbyists and put it into the pockets of billions, making it beautiful, intuitive, and deeply personal.
             </p>
           </div>
         </Section>
 
         {/* Section 3: Design Philosophy */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Intersection of Arts and Tech</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[4]?.url} alt={backgrounds[4]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Intersection of Arts and Tech</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs famously believed that Apple stood at the intersection of technology and the liberal arts. He brought a poet's sensibility to the world of silicon and software. For him, a computer wasn't just a machine; it was a "bicycle for the mind." He obsessed over the curve of a corner, the feel of a scroll, and the simplicity of an interface, believing that great design was not just how something looked, but how it worked.
           </p>
         </Section>
 
         {/* Section 4: Simplicity */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Power of Focus</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[5]?.url} alt={backgrounds[5]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Power of Focus</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             One of his greatest strengths was the ability to say "no." He ruthlessly simplified Apple's product line, focusing on a few things and doing them better than anyone else. This focus on excellence over quantity became the hallmark of the modern Apple. He taught us that simplicity is the ultimate sophistication, and that by removing the clutter, we can find the essence of what truly matters.
           </p>
         </Section>
 
         {/* Section 5: Stanford Speech */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"Stay Hungry, Stay Foolish"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[6]?.url} alt={backgrounds[6]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"Stay Hungry, Stay Foolish"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               His 2005 Stanford commencement speech remains one of the most influential messages of our time. He spoke about connecting the dots, the importance of loving what you do, and the clarity that comes from remembering that we are all mortal. His final exhortation, "Stay Hungry, Stay Foolish," became a mantra for a new generation of creators, entrepreneurs, and dreamers.
             </p>
           </div>
@@ -273,132 +247,132 @@ export const Story2011: React.FC = () => {
 
         {/* Section 6: Death as a Tool */}
         <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Remembering You Are Going to Die</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Remembering You Are Going to Die</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             "Remembering that you are going to die is the best way I know to avoid the trap of thinking you have something to lose. You are already naked. There is no reason not to follow your heart." These words, spoken years before his passing, revealed the deep philosophical core that drove his relentless pursuit of innovation. He lived with an urgency that few could match, always pushing for the next breakthrough.
           </p>
         </Section>
 
         {/* Section 7: Apple Park */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Last Project</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[7]?.url} alt={backgrounds[7]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Last Project</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             One of his final major projects was the vision for Apple Park, the company's new headquarters. He envisioned a "spaceship" that would blend seamlessly with nature, a place where thousands of creative minds could collaborate in an environment designed for inspiration. It stands today as a physical testament to his belief in the power of architecture and environment to shape human creativity.
           </p>
         </Section>
 
         {/* Section 8: The Future of Apple */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Foundation for the Future</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[8]?.url} alt={backgrounds[8]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Foundation for the Future</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs didn't just leave behind products; he left behind a culture. He built a team and a system that could continue to innovate long after he was gone. He understood that for Apple to survive, it had to be more than just one man. He institutionalized his values, ensuring that the pursuit of perfection and the desire to "make a dent in the universe" would remain at the heart of the company.
           </p>
         </Section>
 
         {/* Section 9: Digital Revolution */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"The Architect of the Digital Age"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[9]?.url} alt={backgrounds[9]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"The Architect of the Digital Age"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               From the personal computer to the smartphone, from digital music to animated films, Jobs was the architect of the world we live in today. He saw the potential for technology to empower individuals, to bridge distances, and to unleash creativity. He didn't just predict the future; he built it, one revolutionary product at a time.
             </p>
           </div>
         </Section>
 
         {/* Section 10: Creative Spirit */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Creative Spirit</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[10]?.url} alt={backgrounds[10]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Creative Spirit</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             His spirit lives on in every person who uses a tool to create something new. Whether it's a student coding their first app, an artist designing on a tablet, or a musician recording in their bedroom, they are all part of the legacy of Steve Jobs. He gave us the tools to express our own creativity, believing that everyone has the potential to change the world.
           </p>
         </Section>
 
         {/* Section 11: Zen and Design */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Zen Influence</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[12]?.url} alt={backgrounds[12]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Zen Influence</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             His lifelong interest in Zen Buddhism deeply influenced his approach to design and life. He sought the "emptiness" that allows for true clarity and focus. This spiritual grounding helped him navigate the highs and lows of his career, and it gave his products a sense of calm and purpose that set them apart from everything else.
           </p>
         </Section>
 
         {/* Section 12: Leadership Legacy */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Leadership Legacy</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[13]?.url} alt={backgrounds[13]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Leadership Legacy</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs was a demanding leader, often pushing his teams to their absolute limits. But he also inspired them to do the best work of their lives. He taught us that leadership is about having a clear vision and the courage to follow it, even when others doubt you. He showed us that by setting the bar high, we can achieve things we never thought possible.
           </p>
         </Section>
 
         {/* Section 13: Global Impact */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"A Global Inspiration"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[14]?.url} alt={backgrounds[14]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"A Global Inspiration"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               His story is one of the great American narratives, a journey of triumph, failure, and ultimate redemption. It's a story that inspires people all over the world to follow their passions and to never settle for the status quo. He proved that an individual with a vision and the determination to see it through can truly change the course of history.
             </p>
           </div>
         </Section>
 
         {/* Section 14: Enduring Spirit */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Enduring Spirit</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[15]?.url} alt={backgrounds[15]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Enduring Spirit</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Even years after his passing, his presence is still felt in every Apple keynote, in every new product launch, and in the way we think about the future. He set a standard for excellence that remains the benchmark for the entire industry. His spirit is the "Think Different" campaign in action, a reminder that the people who are crazy enough to think they can change the world are the ones who do.
           </p>
         </Section>
 
         {/* Section 15: Next Generation */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Next Generation</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[16]?.url} alt={backgrounds[16]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Next Generation</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             As we look to the future, the lessons of Steve Jobs are more relevant than ever. In a world of increasing complexity, his focus on simplicity and human-centered design is a guiding light. He challenge us to be more than just consumers; he challenges us to be creators, to be innovators, and to always stay hungry and stay foolish.
           </p>
         </Section>
 
         {/* Section 16: Timeless Design */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Timeless Design</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[17]?.url} alt={backgrounds[17]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Timeless Design</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The products he created have a timeless quality. They don't just age; they become classics. This is because they were built on a foundation of fundamental design principles that transcend trends. He understood that true beauty is found in the perfect balance of form and function, and that by striving for that balance, we can create things that last.
           </p>
         </Section>
 
         {/* Section 17: Infinite Loop */}
-        <Section>
-          <div className="border-l-2 border-current pl-8 py-4">
-            <h2 className="text-3xl md:text-5xl font-light italic serif mb-6">"The Infinite Loop"</h2>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
+        <Section image={backgrounds[18]?.url} alt={backgrounds[18]?.alt}>
+          <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
+            <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"The Infinite Loop"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
               The journey that began in a garage in Los Altos has come full circle, but the loop is infinite. The ideas he sparked continue to evolve, leading to new breakthroughs and new ways of seeing the world. He set in motion a cycle of innovation that shows no signs of slowing down, a testament to the power of a single, focused vision.
             </p>
           </div>
         </Section>
 
         {/* Section 18: Final Reflection */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Final Reflection</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[11]?.url} alt={backgrounds[11]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Final Reflection</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Steve Jobs once said, "Being the richest man in the cemetery doesn't matter to me. Going to bed at night saying we've done something wonderful... that's what matters to me." He lived his life by that principle, and in doing so, he gave us all something wonderful. He showed us that technology can be a force for good, a tool for expression, and a source of wonder.
           </p>
         </Section>
 
         {/* Section 19: The Dent */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Dent in the Universe</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[3]?.url} alt={backgrounds[3]?.alt}>
+          <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Dent in the Universe</h2>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             He famously wanted to "put a dent in the universe." Looking at the world today, it's clear that he did more than just put a dent in it; he reshaped it. He left the world better than he found it, and he gave us the inspiration to do the same. His legacy is not just in the devices we use, but in the belief that we can all make a difference.
           </p>
         </Section>
 
         {/* Section 20: Final Tribute */}
-        <Section className="pb-48">
-          <div ref={lastSectionRef} className="space-y-12">
-            <p className="text-xl md:text-3xl font-light leading-relaxed opacity-90">
+        <Section image={backgrounds[19]?.url} alt={backgrounds[19]?.alt} className="pb-48">
+          <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
+            <p className="text-lg md:text-3xl font-light leading-relaxed opacity-90">
               Steve Jobs was a man who saw the world not as it was, but as it could be. He was a dreamer who did, a visionary who built, and a leader who inspired. His legacy is infinite, and his spirit will continue to guide us as we navigate the ever-changing landscape of the future.
             </p>
             <div className="space-y-4">
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Stay Hungry.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Stay Foolish.</p>
-              <p className="text-lg md:text-xl font-mono uppercase tracking-widest opacity-60">Stay Inspired.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Stay Hungry.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Stay Foolish.</p>
+              <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Stay Inspired.</p>
             </div>
           </div>
         </Section>

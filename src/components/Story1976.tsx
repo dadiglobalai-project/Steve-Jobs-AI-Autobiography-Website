@@ -3,33 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
 import { ArrowLeft, ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
-
-interface SectionProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const Section: React.FC<SectionProps> = ({ children, className = "" }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { amount: 0.3 });
-  const shouldReduceMotion = useReducedMotion();
-
-  return (
-    <section
-      ref={ref}
-      className={`min-h-screen flex items-center justify-center relative px-6 py-24 ${className}`}
-    >
-      <motion.div
-        initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
-        transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-        className="max-w-3xl w-full z-10"
-      >
-        {children}
-      </motion.div>
-    </section>
-  );
-};
+import { Section } from './Section';
 
 const FloatingDust: React.FC = () => {
   const particles = useMemo(() => Array.from({ length: 20 }).map((_, i) => ({
@@ -273,9 +247,9 @@ export const Story1976: React.FC = () => {
         </motion.div>
 
         {/* Intro */}
-        <Section>
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt}>
           <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">1975 to 1976</span>
-          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-12">
+          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             The Birth of a <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -286,15 +260,15 @@ export const Story1976: React.FC = () => {
               Revolution
             </motion.span>
           </h1>
-          <p className="text-xl md:text-3xl font-light leading-relaxed opacity-80 max-w-2xl">
+          <p className="text-lg md:text-3xl font-light leading-relaxed opacity-80 max-w-2xl">
             By 1976, Steve had returned with a new kind of focus. His journey to India and his time at Atari had come together into one bold idea: to take the power of computers away from big companies and put it into the hands of everyday people.
           </p>
         </Section>
 
         {/* The Partnership */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Meeting of Minds</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[1]?.url} alt={backgrounds[1]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Meeting of Minds</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The start of this change was the friendship between Steve Jobs and Steve Wozniak. Wozniak was a true genius with electronics. He could build complex things in a simple and efficient way that few others could. Jobs, on the other hand, was the dreamer who saw how these machines could change people's lives.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -303,9 +277,9 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* The Apple I */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The First Machine</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[2]?.url} alt={backgrounds[2]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The First Machine</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             In 1975, Wozniak built a small computer that could connect to a screen and show text. This was a new and big idea at a time when most computers were huge and used paper. When Jobs saw it, he didn't just see a hobby project. He saw the first step toward a new world.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -314,9 +288,9 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* The Garage */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Garage</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[3]?.url} alt={backgrounds[3]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Garage</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Since they didn't have money for an office, the two Steves started their work in the Jobs family garage. It was a simple start for a company that would one day change the world. The garage was full of the smell of tools and the energy of two young men who believed they were doing something special.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -325,20 +299,20 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* Founding Apple */}
-        <Section>
+        <Section image={backgrounds[4]?.url} alt={backgrounds[4]?.alt}>
           <div className="text-center">
-            <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">April 1, 1976</span>
-            <h2 className="text-5xl md:text-8xl font-light tracking-tighter mb-8">Apple Computer <br /><span className="italic serif">is Born</span></h2>
-            <p className="text-xl md:text-2xl font-light leading-relaxed opacity-70 max-w-2xl mx-auto">
+            <span className="text-xs font-mono uppercase tracking-[0.5em] mb-4 md:mb-6 block opacity-40">April 1, 1976</span>
+            <h2 className="text-xl md:text-8xl font-light tracking-tighter mb-4 md:mb-8">Apple Computer <br /><span className="italic serif">is Born</span></h2>
+            <p className="text-lg md:text-2xl font-light leading-relaxed opacity-70 max-w-2xl mx-auto">
               On April Fools' Day in 1976, Steve Jobs, Steve Wozniak, and Ronald Wayne signed the papers that officially started Apple Computer. It was a bold name for a tech company. It was simple, friendly, and full of life.
             </p>
           </div>
         </Section>
 
         {/* The Byte Shop */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The First Big Order</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[5]?.url} alt={backgrounds[5]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The First Big Order</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Their first major break came when a local shop owner ordered fifty Apple I computers. But he wanted them fully built. Jobs, who never gave up, got the parts he needed by promising to pay for them after the computers were sold.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -347,9 +321,9 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* The Apple II */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Breakthrough: Apple II</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[6]?.url} alt={backgrounds[6]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Breakthrough: Apple II</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             While the Apple I was for people who loved electronics, the Apple II was for everyone. Launched in 1977, it was the first computer to come in a nice plastic case with a keyboard. It could even show colors. It was a finished product, not just a machine.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -358,9 +332,9 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* The Vision */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">A Computer for Everyone</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[7]?.url} alt={backgrounds[7]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Computer for Everyone</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             The success of the Apple II came from a simple belief: that technology should help people be more creative. Jobs saw the computer as a tool that could help people do more than they ever thought possible.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -369,9 +343,9 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* Design Intuition */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Beauty of Simplicity</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[8]?.url} alt={backgrounds[8]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Beauty of Simplicity</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Even in these early days, Jobs' love for design was clear. He believed that the back of a cabinet should be as beautiful as the front, even if no one ever saw it. He brought the lessons of Zen and the simple style of Atari into everything Apple made.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -380,9 +354,9 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* The Start of the Revolution */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">The Spark That Grew</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[9]?.url} alt={backgrounds[9]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Spark That Grew</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             By the end of 1976, Apple was no longer just a garage project. It was a company that was growing fast. They had moved into their first real office, and the world was starting to notice the two young men from Los Altos.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -391,9 +365,9 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* Building the Future */}
-        <Section>
-          <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-8">Building the Future</h2>
-          <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 mb-6">
+        <Section image={backgrounds[10]?.url} alt={backgrounds[10]?.alt}>
+          <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Building the Future</h2>
+          <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
             Jobs was no longer just a dreamer. He was a builder. He had found his purpose in combining technology with art. He was ready to lead a team and build the future he imagined.
           </p>
           <p className="text-lg md:text-xl font-light leading-relaxed opacity-70">
@@ -402,17 +376,17 @@ export const Story1976: React.FC = () => {
         </Section>
 
         {/* Conclusion */}
-        <Section className="pb-48">
-          <div ref={lastSectionRef} className="space-y-12">
-            <p className="text-xl md:text-4xl font-light leading-relaxed opacity-90">
+        <Section image={backgrounds[11]?.url} alt={backgrounds[11]?.alt} className="pb-48">
+          <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
+            <p className="text-lg md:text-4xl font-light leading-relaxed opacity-90">
               The start of Apple in 1976 was the moment the dreamer became a builder, and the world was never the same again.
             </p>
-            <div className="space-y-6">
-              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A focus on the individual.</p>
-              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A love for great design.</p>
-              <p className="text-lg md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A belief in what seems impossible.</p>
+            <div className="space-y-4 md:space-y-6">
+              <p className="text-base md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A focus on the individual.</p>
+              <p className="text-base md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A love for great design.</p>
+              <p className="text-base md:text-2xl font-mono uppercase tracking-[0.3em] opacity-60">A belief in what seems impossible.</p>
             </div>
-            <p className="text-lg md:text-xl font-light leading-relaxed opacity-70 max-w-2xl">
+            <p className="text-sm md:text-xl font-light leading-relaxed opacity-70 max-w-2xl">
               These were the values that would guide Apple for years to come. The revolution was just getting started.
             </p>
           </div>

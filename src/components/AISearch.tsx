@@ -7,6 +7,7 @@ import { Search, X, ArrowRight, Video, Quote as QuoteIcon, Calendar, FileText, S
 import transcripts from '../data/transcripts.json';
 import timelineEvents from '../data/timeline_events.json';
 import quotes from '../data/jobs_quotes.json';
+import { AIService } from '../services/aiService';
 
 interface AISearchProps {
   isOpen: boolean;
@@ -27,42 +28,7 @@ export const AISearch: React.FC<AISearchProps> = ({ isOpen, onClose }) => {
     playSFX('click');
 
     try {
-      const apiKey = process.env.GEMINI_API_KEY || import.meta.env.VITE_GEMINI_API_KEY;
-      if (!apiKey) {
-        throw new Error("API_KEY_MISSING");
-      }
-
-      const ai = new GoogleGenAI({ apiKey });
-
-      const systemInstruction = `
-        You are an intelligent search assistant for the Steve Jobs AI Autobiography.
-        Based on the user's query, you should provide a summary and identify related content from the following data:
-        
-        TIMELINE: ${JSON.stringify(timelineEvents)}
-        QUOTES: ${JSON.stringify(quotes)}
-        TRANSCRIPTS: ${JSON.stringify(transcripts)}
-        
-        Return your response in JSON format with the following structure:
-        {
-          "summary": "A concise AI-generated summary answering the query",
-          "relatedEvents": [ids of related timeline events],
-          "relatedQuotes": [indices of related quotes],
-          "relatedVideos": [ids of related transcripts]
-        }
-      `;
-
-      const response = await ai.models.generateContent({
-        model: "gemini-3-flash-preview",
-        contents: [
-          { role: 'user', parts: [{ text: query }] }
-        ],
-        config: { 
-          responseMimeType: "application/json",
-          systemInstruction
-        }
-      });
-
-      const data = JSON.parse(response.text);
+      const data = await AIService.search(query, { timeline: timelineEvents, quotes, transcripts });
       setResults(data);
       playSFX('notification');
     } catch (error: any) {
