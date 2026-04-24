@@ -47,6 +47,13 @@ export const Timeline: React.FC = () => {
     timelineRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
+  const scrollToYear = (year: string) => {
+    const element = document.getElementById(`milestone-${year}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
   const isLastMilestone = activeIndex === timelineEvents.length - 1;
   const location = useLocation();
 
@@ -64,7 +71,7 @@ export const Timeline: React.FC = () => {
   useEffect(() => {
     const hash = location.hash.replace('#', '');
     if (hash) {
-      const element = document.getElementById(hash);
+      const element = document.getElementById(`milestone-${hash}`);
       if (element) {
         // Delay slightly to ensure layout is ready
         setTimeout(() => {
@@ -102,7 +109,7 @@ export const Timeline: React.FC = () => {
       {/* Page Header Section - Always visible first */}
       <div 
         ref={headerRef}
-        className={`page-header-section pt-32 pb-48 text-center px-6 relative z-10 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}
+        className={`page-header-section min-h-[80vh] pt-0 flex flex-col justify-center text-center px-6 relative z-10 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}
       >
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -139,21 +146,27 @@ export const Timeline: React.FC = () => {
                   }}
                 />
                 
-                {/* Year Markers */}
+                {/* Interactive Year Markers */}
                 <div className="absolute inset-0 flex flex-col justify-between py-2">
                   {timelineEvents.map((event, index) => (
-                    <div key={event.id} className="relative flex items-center justify-center">
+                    <button
+                      key={event.id}
+                      onClick={() => scrollToYear(event.year)}
+                      className="relative flex items-center justify-center group cursor-pointer border-none bg-transparent p-0 outline-none w-full"
+                    >
                       <div
                         style={{
                           transform: `scale(${activeIndex === index ? 1.5 : 1})`,
                           opacity: activeIndex === index ? 1 : 0.4,
                         }}
-                        className={`absolute right-6 whitespace-nowrap text-sm font-mono transition-all duration-0 ${theme === 'dark' ? 'text-white' : 'text-black'}`}
+                        className={`absolute right-6 whitespace-nowrap text-sm font-mono transition-all duration-300 group-hover:opacity-100 group-hover:scale-110 ${theme === 'dark' ? 'text-white' : 'text-black'}`}
                       >
                         {event.year}
                       </div>
-                      <div className={`w-2 h-2 rounded-full ${theme === 'dark' ? 'bg-white' : 'bg-black'}`} />
-                    </div>
+                      <div 
+                        className={`w-2 h-2 rounded-full transition-all duration-300 group-hover:scale-150 ${theme === 'dark' ? 'bg-white' : 'bg-black'} ${activeIndex === index ? 'ring-4 ring-current/20' : ''}`} 
+                      />
+                    </button>
                   ))}
                 </div>
               </div>
@@ -162,50 +175,54 @@ export const Timeline: React.FC = () => {
 
           {/* Right Column (Content) */}
           <div className="flex-1 relative">
-            {/* Sticky Content Display Area */}
-            <div className="sticky top-0 h-screen flex flex-col justify-center pointer-events-none z-10">
-            <div className={`max-w-2xl mx-auto md:mx-0 text-center md:text-left pointer-events-auto transition-opacity duration-300 ${activeIndex === -1 ? 'opacity-0' : 'opacity-100'}`}>
-                {/* Mobile Milestone Image */}
-                <div className="md:hidden mb-4 rounded-xl overflow-hidden shadow-xl aspect-video border border-white/10 max-h-[25vh]">
-                  <img 
-                    src={timelineEvents[activeIndex]?.image} 
-                    alt={timelineEvents[activeIndex]?.title}
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
-                </div>
-
-                <span className={`text-[9px] md:text-[10px] font-mono uppercase tracking-[0.6em] mb-2 md:mb-6 block transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/60'}`}>
-                  {timelineEvents[activeIndex]?.year}
-                </span>
-                <h2 className={`text-lg md:text-6xl lg:text-7xl font-light tracking-tighter leading-tight mb-2 md:mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
-                  {timelineEvents[activeIndex]?.title}
-                </h2>
-                <p className={`text-[10px] md:text-xl font-light mb-4 md:mb-10 leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>
-                  {timelineEvents[activeIndex]?.description}
-                </p>
-                <Link
-                  to={`/journey/${timelineEvents[activeIndex]?.year}`}
-                  className={`group relative inline-flex items-center gap-6 text-xs font-mono uppercase tracking-[0.4em] transition-all duration-500 ${theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-black/70 hover:text-black'}`}
-                  aria-label={`Navigate to ${timelineEvents[activeIndex]?.title} milestone details`}
-                >
-                  <span className="relative z-10">{timelineEvents[activeIndex]?.cta}</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-3 transition-transform duration-500" />
-                  <div className={`absolute -bottom-2 left-0 w-0 h-px transition-all duration-500 group-hover:w-full ${theme === 'dark' ? 'bg-white/40' : 'bg-black/40'}`}></div>
-                </Link>
-              </div>
-            </div>
-
-            {/* Scroll Trigger Sections */}
-            <div className="relative z-0 pointer-events-none">
+            {/* Scroll Trigger Sections - Defines the interactive length and navigation targets */}
+            <div className="relative z-0">
               {timelineEvents.map((event, index) => (
                 <div
                   key={index}
-                  id={event.year}
-                  className="milestone-section h-[70vh] scroll-mt-[15vh]"
+                  id={`milestone-${event.year}`}
+                  className="milestone-section h-[80vh] scroll-mt-[10vh]"
                   data-index={index}
                 />
               ))}
+              {/* Bottom padding to allow last item to be centered */}
+              <div className="h-[20vh]" />
+            </div>
+
+            {/* Sticky Content Display Area - Overlayed on the triggers to avoid offset errors */}
+            <div className="absolute inset-0 pointer-events-none z-10">
+              <div className="sticky top-20 h-[calc(100vh-5rem)] flex flex-col justify-center">
+                <div className={`max-w-2xl mx-auto md:mx-0 text-center md:text-left pointer-events-auto transition-opacity duration-300 ${activeIndex === -1 ? 'opacity-0' : 'opacity-100'}`}>
+                  {/* Mobile Milestone Image */}
+                  <div className="md:hidden mb-4 rounded-xl overflow-hidden shadow-xl aspect-video border border-white/10 max-h-[25vh]">
+                    <img 
+                      src={timelineEvents[activeIndex]?.image} 
+                      alt={timelineEvents[activeIndex]?.title}
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
+                  </div>
+
+                  <span className={`text-[9px] md:text-[10px] font-mono uppercase tracking-[0.6em] mb-2 md:mb-6 block transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/60'}`}>
+                    {timelineEvents[activeIndex]?.year}
+                  </span>
+                  <h2 className={`text-lg md:text-6xl lg:text-7xl font-light tracking-tighter leading-tight mb-2 md:mb-8 transition-colors duration-500 ${theme === 'dark' ? 'text-white' : 'text-black'}`}>
+                    {timelineEvents[activeIndex]?.title}
+                  </h2>
+                  <p className={`text-[10px] md:text-xl font-light mb-4 md:mb-10 leading-relaxed tracking-wide transition-colors duration-500 ${theme === 'dark' ? 'text-white/80' : 'text-gray-700'}`}>
+                    {timelineEvents[activeIndex]?.description}
+                  </p>
+                  <Link
+                    to={`/journey/${timelineEvents[activeIndex]?.year}`}
+                    className={`group relative inline-flex items-center gap-6 text-xs font-mono uppercase tracking-[0.4em] transition-all duration-500 ${theme === 'dark' ? 'text-white/60 hover:text-white' : 'text-black/70 hover:text-black'}`}
+                    aria-label={`Navigate to ${timelineEvents[activeIndex]?.title} milestone details`}
+                  >
+                    <span className="relative z-10">{timelineEvents[activeIndex]?.cta}</span>
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-3 transition-transform duration-500" />
+                    <div className={`absolute -bottom-2 left-0 w-0 h-px transition-all duration-500 group-hover:w-full ${theme === 'dark' ? 'bg-white/40' : 'bg-black/40'}`}></div>
+                  </Link>
+                </div>
+              </div>
             </div>
           </div>
         </div>

@@ -1,7 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { Section } from './Section';
 
@@ -41,7 +40,6 @@ const FloatingDust: React.FC = () => {
 
 export const Story2001: React.FC = () => {
   const { theme } = useTheme();
-  const navigate = useNavigate();
   const containerRef = useRef<HTMLDivElement>(null);
   const shouldReduceMotion = useReducedMotion();
   const lastSectionRef = useRef(null);
@@ -66,44 +64,44 @@ export const Story2001: React.FC = () => {
   const step = 1 / (totalSections - 1); 
   const fade = step * 0.4;
 
-  const createRange = (startIdx: number, endIdx: number = startIdx) => {
-    const start = startIdx * step;
-    const end = (endIdx + 1) * step;
+  const createRange = (idx: number) => {
+    const start = idx * step;
     
-    const r1 = startIdx === 0 ? 0 : Math.max(0, start - fade);
-    const r2 = startIdx === 0 ? 0 : start;
-    const r3 = endIdx === totalSections - 1 ? 1 : Math.min(1, end - fade);
-    const r4 = endIdx === totalSections - 1 ? 1 : Math.min(1, end);
+    // Improved range for better timing: reaches 100% early and stays longer
+    const r1 = idx === 0 ? 0 : Math.max(0, start - step * 0.8);
+    const r2 = idx === 0 ? 0 : Math.max(0, start - step * 0.2);
+    const r3 = idx === totalSections - 1 ? 1 : Math.min(1, start + step * 0.2);
+    const r4 = idx === totalSections - 1 ? 1 : Math.min(1, start + step * 0.8);
     
     return [r1, r2, r3, r4];
   };
 
   const backgrounds = useMemo(() => [
-    { id: 1, url: "https://picsum.photos/seed/cd-collection/1920/1080", alt: "CDs and Cassettes" },
-    { id: 2, url: "https://picsum.photos/seed/internet-music/1920/1080", alt: "Digital Downloads" },
-    { id: 3, url: "https://picsum.photos/seed/jobs-vision/1920/1080", alt: "Jobs' Opportunity" },
-    { id: 4, url: "https://picsum.photos/seed/easy-music/1920/1080", alt: "Enjoying Music" },
-    { id: 5, url: "https://picsum.photos/seed/system/1920/1080", alt: "Complete System" },
-    { id: 6, url: "https://picsum.photos/seed/apple-team/1920/1080", alt: "The Challenge" },
-    { id: 7, url: "https://picsum.photos/seed/ipod-reveal/1920/1080", alt: "The iPod" },
-    { id: 8, url: "https://picsum.photos/seed/pocket-music/1920/1080", alt: "1,000 Songs" },
-    { id: 9, url: "https://picsum.photos/seed/turning-point/1920/1080", alt: "Turning Point" },
-    { id: 10, url: "https://picsum.photos/seed/ipod-design/1920/1080", alt: "Clean Design" },
-    { id: 11, url: "https://picsum.photos/seed/beyond-device/1920/1080", alt: "Beyond the Device" },
-    { id: 12, url: "https://picsum.photos/seed/itunes-logo/1920/1080", alt: "iTunes Creation" },
-    { id: 13, url: "https://picsum.photos/seed/itunes-store/1920/1080", alt: "iTunes Store" },
-    { id: 14, url: "https://picsum.photos/seed/negotiation/1920/1080", alt: "Music Industry" },
-    { id: 15, url: "https://picsum.photos/seed/ecosystem/1920/1080", alt: "Complete Experience" },
-    { id: 16, url: "https://picsum.photos/seed/discovery/1920/1080", alt: "Discover and Buy" },
-    { id: 17, url: "https://picsum.photos/seed/global-impact/1920/1080", alt: "Immediate Impact" },
-    { id: 18, url: "https://picsum.photos/seed/playlists/1920/1080", alt: "Personal Playlists" },
-    { id: 19, url: "https://picsum.photos/seed/lifestyle/1920/1080", alt: "Music Everywhere" },
-    { id: 20, url: "https://picsum.photos/seed/industry-shift/1920/1080", alt: "Industry Change" },
-    { id: 21, url: "https://picsum.photos/seed/apple-growth/1920/1080", alt: "Major Step Forward" },
-    { id: 22, url: "https://picsum.photos/seed/new-users/1920/1080", alt: "Millions of Users" },
-    { id: 23, url: "https://picsum.photos/seed/iphone-foundation/1920/1080", alt: "iPhone Foundation" },
-    { id: 24, url: "https://picsum.photos/seed/simplicity-focus/1920/1080", alt: "Simplicity Focus" },
-    { id: 25, url: "https://picsum.photos/seed/meaningful-tech/1920/1080", alt: "Meaningful Tech" },
+    { id: 1, url: "https://images.gizbot.com/img/2023/08/apple-ipod-from-2001-1691143595.jpg", alt: "CDs and Cassettes" },
+    { id: 2, url: "https://tse2.mm.bing.net/th/id/OIP.CmrZ8nxl_0iXnmMQjok1KgHaDt?w=1200&h=600&rs=1&pid=ImgDetMain&o=7&rm=3", alt: "Digital Downloads" },
+    { id: 3, url: "https://forevertwentysomethings.com/wp-content/uploads/2015/11/Untitled-design-82.jpg", alt: "Jobs' Opportunity" },
+    { id: 4, url: "https://allaboutstevejobs.com/resources/img/pics/1999-01-01_08547.jpg", alt: "Enjoying Music" },
+    { id: 5, url: "https://standfirst-designweek-production.imgix.net/uploads/2019/07/02161401/ipod-2001-launch-resized.jpg?fit=crop&crop=faces&q=80&auto=compress,format&w=750&h=500", alt: "Complete System" },
+    { id: 6, url: "https://nbxsoluciones.com/wp-content/uploads/2024/10/steve_jobs.jpg", alt: "The Challenge" },
+    { id: 7, url: "https://assets.shortpedia.com/uploads/2021/10/16/1634367828.webp?tr=w-1200,h-600,cm-pad_resize,bg-F3F3F3", alt: "The iPod" },
+    { id: 8, url: "https://applescoop.org/image/story/steve-jobs-announcing-itunes-in-2001-applescoop-2024-11-04-22-29-10.jpeg", alt: "1,000 Songs" },
+    { id: 9, url: "https://applescoop.org/image/story/steve-jobs-announcing-itunes-in-2001-applescoop-2024-11-04-22-29-10.jpeg", alt: "Turning Point" },
+    { id: 10, url: "https://www.europeanceo.com/wp-content/uploads/2019/08/iTunes-music-store.jpg", alt: "Clean Design" },
+    { id: 11, url: "https://luxurylaunches.com/wp-content/uploads/2025/02/stevejobs-bono.jpg", alt: "Beyond the Device" },
+    { id: 12, url: "https://news.artnet.com/app/news-upload/2022/05/GettyImages-2038318-1920x1276.jpg", alt: "iTunes Creation" },
+    { id: 13, url: "https://img.buzzfeed.com/buzzfeed-static/static/2022-05/11/15/asset/82ea240a9e12/sub-buzz-3015-1652281845-1.jpg?downsize=700:*&output-quality=auto&output-format=auto", alt: "iTunes Store" },
+    { id: 14, url: "https://fm.cnbc.com/applications/cnbc.com/resources/img/editorial/2015/08/12/102914547-20140511--1520-11.1910x1000.jpg", alt: "Music Industry" },
+    { id: 15, url: "https://tse1.mm.bing.net/th/id/OIP.R9YN3PpgLYJO4KM-Yk5tqgHaDS?w=2560&h=1138&rs=1&pid=ImgDetMain&o=7&rm=3", alt: "Complete Experience" },
+    { id: 16, url: "https://tse4.mm.bing.net/th/id/OIP.Rl_5jtm1qo7_wX4fCeTKcQHaEk?rs=1&pid=ImgDetMain&o=7&rm=3", alt: "Discover and Buy" },
+    { id: 17, url: "https://tse1.mm.bing.net/th/id/OIP.jQnBQ6MEgYDU1gqH3khpLAHaE7?w=810&h=539&rs=1&pid=ImgDetMain&o=7&rm=3", alt: "Immediate Impact" },
+    { id: 18, url: "https://tse1.mm.bing.net/th/id/OIP.jQnBQ6MEgYDU1gqH3khpLAHaE7?w=810&h=539&rs=1&pid=ImgDetMain&o=7&rm=3", alt: "Personal Playlists" },
+    { id: 19, url: "https://pmamagazine.org/wp-content/uploads/2024/07/the-ipods-1024x576.png", alt: "Music Everywhere" },
+    { id: 20, url: "https://www.highsnobiety.com/static-assets/thumbor/C17Z-KW-jcAz8XC8QtKfc1ie8sQ=/960x640/www.highsnobiety.com/static-assets/wp-content/uploads/2018/08/02191304/apple-one-trillion-dollar-company-001.jpg", alt: "Industry Change" },
+    { id: 21, url: "https://img.buzzfeed.com/buzzfeed-static/static/2022-05/11/15/asset/82ea240a9e12/sub-buzz-3001-1652281922-12.jpg?resize=990:647", alt: "Major Step Forward" },
+    { id: 22, url: "https://c.files.bbci.co.uk/B803/production/_124670174_gettyimages-76523903.jpg", alt: "Millions of Users" },
+    { id: 23, url: "https://pyxis.nymag.com/v1/imgs/d2e/8ba/16d97175a9c8874c36fafafb97686e3bc8-GettyImages-55739040.1x.rsocial.w1200.jpg", alt: "iPhone Foundation" },
+    { id: 24, url: "https://laughingsquid.com/wp-content/uploads/2006/01/jobs_keynote.jpg?is-pending-load=1", alt: "Simplicity Focus" },
+    { id: 25, url: "https://cdn.vox-cdn.com/thumbor/14AkQe4enGLW9P3wnvpsT-dk0ZE=/0x0:3504x2336/1820x1213/filters:focal(372x1165:932x1725)/cdn.vox-cdn.com/uploads/chorus_image/image/55929377/55313310.0.jpg", alt: "Meaningful Tech" },
   ], []);
 
   const bgTransforms = backgrounds.map((_, i) => 
@@ -131,13 +129,13 @@ export const Story2001: React.FC = () => {
               y: parallax,
               willChange: 'opacity'
             }}
-            className="absolute inset-0"
+            className="absolute -top-10 -bottom-20 left-0 right-0"
           >
             <img 
               src={bg.url} 
               alt={bg.alt}
               loading={i === 0 ? "eager" : "lazy"}
-              className="w-full h-full object-cover grayscale opacity-40"
+              className="w-full h-full object-cover opacity-40"
               referrerPolicy="no-referrer"
             />
             <div className={`absolute inset-0 ${theme === 'dark' ? 'bg-gradient-to-b from-black via-transparent to-black opacity-60' : 'bg-gradient-to-b from-white via-transparent to-white opacity-60'}`} />
@@ -160,31 +158,13 @@ export const Story2001: React.FC = () => {
       {/* Grain Overlay */}
       <div className="fixed inset-0 z-[5] pointer-events-none opacity-[0.03] mix-blend-overlay animate-noise bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 px-6 py-8 flex justify-between items-center mix-blend-difference">
-        <button 
-          onClick={() => navigate('/journey')}
-          className="flex items-center gap-2 text-xs font-mono uppercase tracking-widest opacity-60 hover:opacity-100 transition-opacity"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Journey
-        </button>
-        <span className="text-xs font-mono uppercase tracking-[0.3em] opacity-40">Chapter 2001: The iPod</span>
-      </nav>
 
       {/* Content */}
       <div className="relative z-10">
         {/* Hero Section */}
-        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt} className="items-center text-center">
-          <motion.span 
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40"
-          >
-            October 2001
-          </motion.span>
-          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt} className="items-center text-center" isHero>
+
+          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             1,000 <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -200,9 +180,9 @@ export const Story2001: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="text-lg md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70"
+            className="text-base md:text-2xl font-light leading-relaxed max-w-2xl mx-auto opacity-70 mb-6"
           >
-            As the new millennium began, the way we listened to music was changing, but it was often frustrating. For a long time, our music collections were physical. We had stacks of CDs, cassette tapes, or just the radio. While portable CD players let us take music with us, they were big, they skipped easily, and you could only carry a few albums. Early digital music players were even worse. They were slow, hard to use, and could only hold a few songs at a time.
+            By the start of 2001, the world was changing, but the way we carried our music felt stuck in the past. For decades, our favorite songs were tied to physical objects. We lived with stacks of CDs that scratched, cassette tapes that tangled, and the simple hope of catching a good song on the radio.
           </motion.p>
         </Section>
 
@@ -210,7 +190,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[1]?.url} alt={backgrounds[1]?.alt}>
           <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The Early Digital Days</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            At the same time, the internet was changing how people found music, but it was a mess. Millions of people were downloading songs, but the files were often poorly labeled and the sound quality was bad. There was no easy way to manage a large music library. For most people, the dream of having all their music on a computer was hard to achieve because it was too technical and complicated.
+            At the same time, the internet was beginning to change how we found music, but it was a chaotic and messy experience. Millions of people were discovering the ability to download songs, but the files were often poor quality and incorrectly labeled.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            There was no easy way to organize a large collection or keep track of what we owned. For most people, the dream of having a whole library of music on a computer felt out of reach. It was a technical puzzle that required too much time and effort, leaving the average person behind in a world of complicated software and broken connections.
           </p>
         </Section>
 
@@ -218,8 +201,11 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[2]?.url} alt={backgrounds[2]?.alt}>
           <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
             <h2 className="text-lg md:text-5xl font-light italic serif mb-4 md:mb-6">"A New Way to Listen"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4">
+              Steve Jobs watched this confusion and saw a beautiful opportunity to change how we lived. He believed that music was a fundamental part of the human experience, something that should be easy to enjoy and share. He felt that technology should get out of the way, allowing the art to speak for itself.
+            </p>
             <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
-              Steve Jobs saw this as a chance to change everything. He believed that music was a huge part of life and that listening to it should be easy and fun. He thought people shouldn't have to worry about technical details or how many songs they could fit. They should be able to carry their whole music collection anywhere and listen without any trouble. He imagined a future where technology made it simple to enjoy art.
+              To him, it wasn't just about bits and bytes; it was about the way a song could change your mood or bring back a memory. He imagined a future where anyone could carry their entire life's soundtrack in their pocket, turning a complicated technical problem into a simple, joyful experience.
             </p>
           </div>
         </Section>
@@ -228,7 +214,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[4]?.url} alt={backgrounds[4]?.alt}>
           <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Complete System</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            Jobs wanted to do more than just make another music player. He wanted to build a whole system where the device and the software worked perfectly together. At Apple, he challenged his team with one goal. They had to build a device that could hold a huge library of songs, work very fast, and be so simple that anyone could use it right away without reading a manual.
+            Jobs knew that to truly fix the problem, he couldn't just build another gadget. He wanted to create a complete system where the hardware and the software worked together in perfect harmony. At Apple, he pushed his team to think beyond the limits of what already existed.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            He challenged them to build a device that was incredibly fast, held a massive amount of music, and was so intuitive that a child could use it. He wanted to remove the friction from digital music, making the process of finding and playing a song feel as natural as breathing.
           </p>
         </Section>
 
@@ -236,7 +225,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[6]?.url} alt={backgrounds[6]?.alt}>
           <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Pure and Simple</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            He pushed for a design that felt simple from the very first time you touched it. This led to the iPod, a beautiful, small device made of white plastic and steel. It felt more like a piece of jewelry than a computer. When Apple launched the iPod in October 2001, Jobs used a simple phrase that everyone remembered: "1,000 songs in your pocket." It was a promise of freedom in a device that fit in your hand.
+            He insisted on a design that felt pure and honest from the very first moment you held it. This relentless focus led to the creation of the iPod, a small and elegant device made of polished steel and white plastic. It didn't look like a computer; it looked like a piece of art.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            When Apple launched the iPod in October 2001, Jobs used a simple phrase that everyone remembered: "1,000 songs in your pocket." It was a promise of freedom in a device that fit in your hand.
           </p>
         </Section>
 
@@ -244,7 +236,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[7]?.url} alt={backgrounds[7]?.alt}>
           <h2 className="text-xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Message for Everyone</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            This message was powerful because it talked about how the device would help people, not just how it worked. Instead of talking about technical details like megabytes or battery power, Jobs focused on the feeling of having all your music with you. It wasn't about the technology. It was about being able to take your favorite songs and memories wherever you went.
+            This message was powerful because it focused on the human benefit rather than the technology itself. Jobs understood that people didn't care about megabytes or disk speeds; they cared about their favorite albums and the songs that defined their lives.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            By framing the iPod as a way to carry your memories with you, he made the technology feel personal and accessible. It wasn't just a tool for tech enthusiasts anymore. It was a companion for everyone, a way to bring a little bit of magic into the ordinary moments of every day.
           </p>
         </Section>
 
@@ -252,8 +247,11 @@ export const Story2001: React.FC = () => {
         <Section>
           <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
             <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"A Big Change"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4">
+              The launch of the iPod marked a profound turning point in the history of technology. The device was remarkably clean, stripped of any unnecessary buttons or complicated menus. Its most innovative feature was the scroll wheel, a simple interface that allowed you to navigate through thousands of songs with just a gentle movement of your thumb.
+            </p>
             <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
-              The launch of the iPod was a big change for technology. The device was small, clean, and very easy to use. Its best feature was the scroll wheel, which let you find any song quickly with just your thumb. It made finding music feel like magic instead of a chore.
+              It turned the act of searching for music into something that felt like magic. For the first time, technology didn't feel like a barrier between you and your music; it felt like a bridge.
             </p>
           </div>
         </Section>
@@ -262,7 +260,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[10]?.url} alt={backgrounds[10]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Easy to Use</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The iPod felt natural to use, even for people who were afraid of new technology. But Jobs knew that a great device was only half of the story. To really fix the music problem, people needed an easy way to buy and manage their music. This led to the growth of iTunes, which became the center of the digital music world.
+            The iPod was designed to feel natural and inviting, even for those who were intimidated by new gadgets. But Jobs realized that a beautiful device was only half of the solution.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            To truly revolutionize the industry, people needed a way to manage their growing digital libraries without the frustration of the past. This realization led to the evolution of iTunes, which would soon become the heart of the digital music revolution. It was the beginning of a new way of thinking about how we interact with our media and each other.
           </p>
         </Section>
 
@@ -270,7 +271,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[11]?.url} alt={backgrounds[11]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Bringing Order to Music</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            At first, iTunes was a simple program that helped people organize the music on their computers. It let them take music from their CDs and put it into folders or playlists. It brought order to the mess of digital files. Then, in 2003, Apple opened the iTunes Music Store, which changed the whole music industry.
+            In its early days, iTunes was a simple but powerful tool designed to help people bring order to the chaos of their digital files. It allowed users to easily take music from their physical CDs and organize it into digital folders and personal playlists.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            It was the first step in making the computer the center of our creative lives. By providing a clean and reliable way to manage music, Apple gave people the confidence to embrace the digital world. It turned the computer from a cold machine into a personal library of everything we loved.
           </p>
         </Section>
 
@@ -278,7 +282,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[12]?.url} alt={backgrounds[12]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">99 Cents</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The store offered something new. You could buy one song at a time, legally and safely, for just 99 cents. Jobs spent a lot of time talking to record companies to get them to agree to this. He built a system that was easy for customers and fair for the artists. It gave people a better choice than downloading music for free.
+            Then, in 2003, Apple took another massive step by opening the iTunes Music Store. It was a move that would forever change the landscape of the music industry. The store offered a revolutionary new model: you could buy any song you wanted, legally and safely, for just 99 cents.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            It was a simple and fair price that respected both the customer and the artist. Jobs had spent months in difficult negotiations with record companies, convincing them that a digital future was not something to fear, but something to embrace.
           </p>
         </Section>
 
@@ -286,7 +293,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[13]?.url} alt={backgrounds[13]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Making it All Work Together</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            Getting everyone to agree was not easy because many people in the music business were afraid of the digital future. But Jobs made it work. Together, the iPod and iTunes offered a complete experience. You could find new music, buy it with one click, and put it on your iPod with almost no effort.
+            Winning over the music industry was one of the most difficult challenges Jobs ever faced. Many executives were terrified that digital music would destroy their business, but Jobs showed them a better way.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            He built a system that was so easy and convenient that people would choose to pay for music rather than download it for free. Together, the iPod and iTunes created a seamless experience that had never existed before. You could discover a new artist, buy a song with a single click, and have it on your device in seconds, all without ever leaving your chair.
           </p>
         </Section>
 
@@ -294,8 +304,11 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[14]?.url} alt={backgrounds[14]?.alt}>
           <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
             <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"Everything Working Together"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4">
+              The true genius of the iPod was how every part of the system worked together in perfect sync. This was a core belief for Jobs: that products should not be isolated objects, but part of a larger ecosystem that makes life simpler.
+            </p>
             <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
-              Every part of this new system worked together perfectly. This was one of Jobs’ most important ideas. He believed that products should not just be separate gadgets. Instead, they should be part of a larger system that makes life easier and makes complicated things feel simple.
+              He wanted the transition from the store to the software to the device to be invisible. By controlling every step of the process, Apple was able to ensure a level of quality and ease that no other company could match. It was a reminder that when technology is designed with a single vision, it can feel like a natural extension of ourselves.
             </p>
           </div>
         </Section>
@@ -304,7 +317,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[16]?.url} alt={backgrounds[16]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Global Success</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The iPod was a huge success right away. Soon, the white earbuds were seen everywhere. People no longer had to carry heavy cases of CDs or listen to whatever the radio played. They could have their own music with them all the time, creating the perfect background for every part of their day.
+            The impact of the iPod was immediate and global. Almost overnight, the iconic white earbuds became a common sight on city streets and in quiet parks. It was a silent signal that you were part of a new era.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            People were no longer tethered to their home stereos or limited by the weight of their CD collections. They were free to move through the world with their own personal soundtrack, creating a sense of privacy and connection even in the middle of a crowded city. The iPod had turned music into a constant, living part of our environment.
           </p>
         </Section>
 
@@ -312,7 +328,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[17]?.url} alt={backgrounds[17]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Your Own Music</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            Music became more personal and a bigger part of daily life. Students listened on their way to school, office workers used it to focus, and runners used it for energy. Music was no longer something you only listened to at home. It was a constant companion that went wherever you went.
+            Music became more personal than it had ever been before. It was no longer just something we listened to; it was something we lived with. Students used it to find focus during long study sessions, office workers used it to create a sense of space in busy rooms, and athletes used it to find the rhythm for their training.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            The iPod was a companion that understood your mood and followed your lead. It allowed us to curate our own experiences, turning the background noise of life into a series of meaningful and intentional moments.
           </p>
         </Section>
 
@@ -320,7 +339,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[18]?.url} alt={backgrounds[18]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Music on the Move</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The iPod changed music into something that moved with you. It also changed the music industry. It proved that people would pay for digital music if the process was simple and fair. This paved the way for the music streaming services we use today.
+            The iPod transformed music into something that moved with us, changing the very rhythm of our daily lives. It also forced the music industry to finally confront the digital age.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            By proving that people were willing to pay for a great experience, Apple paved the way for the streaming services that define how we listen today. It was the first step in a long journey toward a world where all the music ever recorded is available to everyone, everywhere. The iPod didn't just change how we listened; it changed what we expected from the world.
           </p>
         </Section>
 
@@ -328,7 +350,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[20]?.url} alt={backgrounds[20]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">The New Digital Era</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The iTunes Store quickly became one of the most popular ways to buy music. It led the whole industry into the digital age. For Apple, the success of the iPod was more than just a new product. it changed how people saw the company. Apple was no longer just a computer maker. It was now a leader in entertainment and lifestyle.
+            The success of the iTunes Store was a clear sign that the digital era had truly arrived. It quickly became the most popular way to buy music, leading the entire industry into a new chapter.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            For Apple, the iPod was more than just a successful product; it was a fundamental shift in the company's identity. They were no longer just a computer company for a small group of enthusiasts. They were now a leader in culture, entertainment, and lifestyle, proving that their vision of simplicity and design could resonate with everyone.
           </p>
         </Section>
 
@@ -336,8 +361,11 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[21]?.url} alt={backgrounds[21]?.alt}>
           <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
             <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"A New Audience"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4">
+              The iPod brought millions of new people into the Apple family, many of whom had never considered owning a Mac before. This became known as the 'halo effect,' as people who fell in love with their music player began to trust the company with the rest of their digital lives.
+            </p>
             <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
-              The iPod brought millions of new people to Apple who had never owned a Mac before. People who loved their iPod soon became curious about other Apple products. This created a lot of loyal customers and opened the door for even bigger ideas that Apple was working on in secret.
+              It created a deep sense of loyalty and excitement that would fuel Apple's growth for years to come. The iPod opened a door that would never be closed, inviting the world to see technology not as a chore, but as a way to enhance the things they already loved.
             </p>
           </div>
         </Section>
@@ -346,7 +374,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[22]?.url} alt={backgrounds[22]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Building the Future</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The ideas and technology from the iPod became the base for everything Apple did next. Through the iPod, Apple learned how to build small, powerful devices with long battery life and great screens. The company learned how to make hardware and software work together in a way that people could trust every day.
+            The technology and design lessons learned from the iPod became the foundation for everything Apple would build next. It was through the iPod that the company mastered the art of building small, powerful devices with incredible battery life and beautiful screens.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            They learned how to manage complex supply chains and how to create software that felt alive under your touch. The iPod was the laboratory where the future was being built, one small detail at a time, preparing the way for a revolution that was still years away.
           </p>
         </Section>
 
@@ -354,7 +385,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[23]?.url} alt={backgrounds[23]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Lessons from the iPod</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The lessons Apple learned from the iPod helped them create the iPhone, which would change the world again. During this time, Steve Jobs’ leadership was seen in every detail. He was obsessed with simplicity. He always pushed his team to remove anything that wasn't needed until only the best part of the product was left.
+            These lessons would eventually lead to the creation of the iPhone, a device that would change the world even more profoundly than the iPod. Throughout this time, Steve Jobs' influence was visible in every single detail.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            He remained obsessed with the idea of simplicity, constantly pushing his team to remove anything that wasn't absolutely necessary. He believed that the best design was the one that felt like it had always been there, a product so refined that it felt like it couldn't have been made any other way.
           </p>
         </Section>
 
@@ -362,7 +396,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[24]?.url} alt={backgrounds[24]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Focus on Simplicity</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            He wanted products that were easy to use, even if they were hard to build. He cared about how Apple’s products felt in your hand and how they responded when you touched them. He also had a special talent for explaining these ideas to the public in a way that felt personal and important.
+            Jobs wanted products that felt human and responsive, even if they were incredibly difficult to engineer. He cared deeply about the way a device felt in your hand, the weight of the materials, and the way the interface responded to your touch.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            He had a rare talent for taking these complex ideas and explaining them to the public in a way that felt personal and deeply important. He didn't just sell products; he shared a vision of how life could be better, more beautiful, and more connected through the power of great design.
           </p>
         </Section>
 
@@ -370,8 +407,11 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[22]?.url} alt={backgrounds[22]?.alt}>
           <div className="border-l-2 border-current pl-6 md:pl-8 py-2 md:py-4">
             <h2 className="text-xl md:text-5xl font-light italic serif mb-4 md:mb-6">"Technology for People"</h2>
+            <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4">
+              The simple phrase '1,000 songs in your pocket' remains one of the most perfect examples of his ability to make technology feel meaningful. It stripped away the jargon and the complexity, leaving only the human promise.
+            </p>
             <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
-              The simple phrase "1,000 songs in your pocket" was a perfect example of how he could make complex technology feel meaningful. Looking back, the iPod was much more than just a music player. it was a cultural change that showed that design and the user experience were just as important as the technology inside.
+              Looking back, we can see that the iPod was much more than just a music player. It was a cultural shift that proved that the experience of using a product was just as important as the technology inside it. It was a reminder that when we design for people, we can create something that truly lasts.
             </p>
           </div>
         </Section>
@@ -380,7 +420,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[21]?.url} alt={backgrounds[21]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Changing How We Live</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            It changed how we listen to music and how we connect with the artists we love. It moved the world away from physical CDs and toward the digital world we live in today. It was the device that put the internet in our pockets and changed the rhythm of our lives.
+            The iPod changed the way we listen to music and how we connect with the artists who move us. It moved the world away from the limitations of physical media and toward the infinite possibilities of the digital world.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            It was the device that first put the power of the internet in our pockets, changing the way we interact with information and each other. It was a quiet revolution that started with a single song and ended by changing the rhythm of the entire world, one person at a time.
           </p>
         </Section>
 
@@ -388,7 +431,10 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[19]?.url} alt={backgrounds[19]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">Part of Daily Life</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            The iPod showed that technology can become a natural part of daily life when it is designed with people in mind. It wasn't just a tool. It was an extension of your personality. At the center of this change was Steve Jobs, who believed that technology and art should work together.
+            It showed us that technology can become a natural and beautiful part of our daily lives when it is designed with empathy and care. The iPod wasn't just a tool; it was an extension of our personalities and a reflection of our tastes.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            It allowed us to carry our inner worlds with us wherever we went. At the heart of this transformation was Steve Jobs, a man who believed that the intersection of technology and the liberal arts was where the most important work happened. He saw the beauty in the machine.
           </p>
         </Section>
 
@@ -396,15 +442,21 @@ export const Story2001: React.FC = () => {
         <Section image={backgrounds[15]?.url} alt={backgrounds[15]?.alt}>
           <h2 className="text-2xl md:text-6xl font-light tracking-tight mb-4 md:mb-8">A Simple Idea</h2>
           <p className="text-base md:text-xl font-light leading-relaxed opacity-70 mb-4 md:mb-6">
-            He was a leader who knew that great products start with a simple, powerful idea. He understood what people wanted even before they knew it themselves. He pushed the limits of what was possible and refused to settle for anything less than a product that could change the world.
+            He was a leader who understood that every great product begins with a simple and powerful idea. He had a unique ability to see what people wanted long before they realized it themselves.
+          </p>
+          <p className="text-base md:text-xl font-light leading-relaxed opacity-70">
+            He refused to settle for anything less than perfection, pushing the boundaries of what was possible and challenging his team to do the best work of their lives. He knew that by focusing on the things that truly mattered, he could create something that would change the world for the better, leaving a legacy of beauty and innovation.
           </p>
         </Section>
 
         {/* Section 25: Conclusion */}
         <Section image={backgrounds[24]?.url} alt={backgrounds[24]?.alt} className="pb-48">
           <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
-            <p className="text-lg md:text-3xl font-light leading-relaxed opacity-90">
-              The iPod was more than just a successful product. It was the start of a new era for Apple and for the world. It was the moment when technology became personal and easy to take with you. It set us on a path to a future where our digital lives are just as important as our physical ones.
+            <p className="text-base md:text-2xl font-light leading-relaxed opacity-90 mb-8">
+              The iPod was more than just a successful product; it was the beginning of a new era for Apple and for the entire world. It was the moment when technology became truly personal, portable, and easy to love.
+            </p>
+            <p className="text-base md:text-2xl font-light leading-relaxed opacity-90">
+              It set us on a path toward a future where our digital lives are seamlessly integrated with our physical ones, a world where the power of information and art is always within reach. It was a journey that started with a simple wheel and led us to a future that is brighter and more connected than we ever imagined.
             </p>
             <div className="space-y-4">
               <p className="text-base md:text-xl font-mono uppercase tracking-widest opacity-60">Simplicity.</p>

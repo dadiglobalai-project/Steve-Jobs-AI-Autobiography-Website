@@ -6,9 +6,10 @@ interface SectionProps {
   className?: string;
   image?: string;
   alt?: string;
+  isHero?: boolean;
 }
 
-export const Section: React.FC<SectionProps> = ({ children, className = "", image, alt }) => {
+export const Section: React.FC<SectionProps> = ({ children, className = "", image, alt, isHero = false }) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { amount: 0.3 });
   const shouldReduceMotion = useReducedMotion();
@@ -16,7 +17,7 @@ export const Section: React.FC<SectionProps> = ({ children, className = "", imag
   return (
     <section
       ref={ref}
-      className={`min-h-screen flex items-center justify-center relative px-6 py-8 md:py-24 ${className}`}
+      className={`${isHero ? 'min-h-[100dvh]' : 'min-h-screen pt-28 pb-8 md:pt-36 md:pb-24'} flex flex-col items-center justify-center relative px-6 w-full ${className}`}
     >
       <motion.div
         initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 40 }}
@@ -28,7 +29,7 @@ export const Section: React.FC<SectionProps> = ({ children, className = "", imag
           <motion.div 
             initial={{ opacity: 0, scale: 0.95 }}
             animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-            className="md:hidden mb-6 rounded-xl overflow-hidden shadow-xl aspect-video border border-white/10 max-h-[30vh]"
+            className={`md:hidden mb-6 rounded-xl overflow-hidden shadow-xl aspect-video border border-white/10 ${isHero ? 'max-h-[25vh]' : 'max-h-[30vh]'}`}
           >
             <img 
               src={image} 

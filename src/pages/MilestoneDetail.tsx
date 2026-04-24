@@ -76,7 +76,7 @@ export const MilestoneDetail: React.FC = () => {
       ) : year === '2011' ? (
         <Story2011 />
       ) : (
-        <div className="max-w-6xl mx-auto px-6 pt-8 pb-20">
+        <div className="max-w-6xl mx-auto px-6 min-h-screen flex flex-col justify-center py-12">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}

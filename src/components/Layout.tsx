@@ -16,7 +16,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
       <Navbar onSearchClick={() => setIsSearchOpen(true)} />
       <AISearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
       
-      <main className="pt-20">
+      <main>
         {children}
       </main>
 

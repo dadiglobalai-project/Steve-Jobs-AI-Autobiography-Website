@@ -1,7 +1,6 @@
 import React, { useRef, useMemo, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, useInView, useReducedMotion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, ArrowUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 import { useTheme } from './ThemeProvider';
 import { Section } from './Section';
 
@@ -94,14 +93,14 @@ export const Story1984: React.FC = () => {
   const step = 1 / (totalSections - 1); 
   const fade = step * 0.4; 
 
-  const createRange = (startIdx: number, endIdx: number = startIdx) => {
-    const start = startIdx * step;
-    const end = (endIdx + 1) * step;
+  const createRange = (idx: number) => {
+    const start = idx * step;
     
-    const r1 = startIdx === 0 ? 0 : Math.max(0, start - fade);
-    const r2 = startIdx === 0 ? 0 : start;
-    const r3 = endIdx === totalSections - 1 ? 1 : Math.min(1, end - fade);
-    const r4 = endIdx === totalSections - 1 ? 1 : Math.min(1, end);
+    // Improved range for better timing: reaches 100% early and stays longer
+    const r1 = idx === 0 ? 0 : Math.max(0, start - step * 0.8);
+    const r2 = idx === 0 ? 0 : Math.max(0, start - step * 0.2);
+    const r3 = idx === totalSections - 1 ? 1 : Math.min(1, start + step * 0.2);
+    const r4 = idx === totalSections - 1 ? 1 : Math.min(1, start + step * 0.8);
     
     return [r1, r2, r3, r4];
   };
@@ -176,7 +175,7 @@ export const Story1984: React.FC = () => {
           <motion.div 
             key={bg.id}
             style={{ opacity: bg.opacity, scale, y: parallax, willChange: 'opacity' }}
-            className="absolute inset-0 bg-cover bg-center"
+            className="absolute -top-10 -bottom-20 left-0 right-0 bg-cover bg-center"
           >
             <div className={`absolute inset-0 z-10 ${theme === 'dark' 
               ? 'bg-gradient-to-b from-black/90 via-black/60 to-black/90' 
@@ -200,25 +199,10 @@ export const Story1984: React.FC = () => {
 
       {/* Narrative Content */}
       <div className="relative z-10">
-        <motion.div
-          initial={{ opacity: 0, x: -20 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ delay: 0.8 }}
-          className="absolute top-8 left-6 z-50"
-        >
-          <Link 
-            to="/journey#1984" 
-            className={`inline-flex items-center gap-2 text-[11px] font-mono uppercase tracking-[0.2em] transition-all px-5 py-2.5 rounded-full backdrop-blur-md border ${theme === 'dark' ? 'text-white/80 hover:text-white border-white/20 bg-white/10 hover:bg-white/20' : 'text-black/80 hover:text-black border-black/20 bg-black/10 hover:bg-black/20'}`}
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Back to Journey
-          </Link>
-        </motion.div>
-
         {/* Intro */}
-        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt}>
-          <span className="text-xs font-mono uppercase tracking-[0.5em] mb-6 block opacity-40">January 24, 1984</span>
-          <h1 className="text-2xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
+        <Section image={backgrounds[0]?.url} alt={backgrounds[0]?.alt} className="text-center" isHero>
+  
+          <h1 className="text-5xl md:text-8xl font-light tracking-tighter leading-[0.9] mb-6 md:mb-12">
             The Computer <br />
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
@@ -229,7 +213,7 @@ export const Story1984: React.FC = () => {
               for Everyone
             </motion.span>
           </h1>
-          <p className="text-lg md:text-2xl font-light leading-relaxed opacity-70">
+          <p className="text-base md:text-2xl font-light leading-relaxed opacity-70">
             In the cold winter of 1984, Apple introduced the Macintosh to a world that didn't yet know how much it needed a change. It wasn't just another computer. It was a new and poetic way of thinking about how people use machines. It was a bold statement that technology should help people, not be something to fear.
           </p>
         </Section>
@@ -412,7 +396,7 @@ export const Story1984: React.FC = () => {
         {/* Section 18: Conclusion */}
         <Section image={backgrounds[17]?.url} alt={backgrounds[17]?.alt} className="pb-48">
           <div ref={lastSectionRef} className="space-y-8 md:space-y-12">
-            <p className="text-lg md:text-3xl font-light leading-relaxed opacity-90">
+            <p className="text-base md:text-2xl font-light leading-relaxed opacity-90">
               Looking back, the Macintosh was much more than just a computer. It was a bold and successful step toward making technology easy and meaningful for everyone.
             </p>
             <div className="space-y-4">
