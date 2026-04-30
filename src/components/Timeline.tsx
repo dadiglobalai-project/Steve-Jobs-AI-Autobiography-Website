@@ -120,7 +120,7 @@ export const Timeline: React.FC = () => {
           <div className={`mb-6 text-[10px] font-mono uppercase tracking-[0.6em] transition-colors duration-500 ${theme === 'dark' ? 'text-white/50' : 'text-black/40'}`}>
             A Life of Big Ideas
           </div>
-          <h1 className="text-2xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-[0.9] mb-4 md:mb-8">
+          <h1 className="text-5xl md:text-7xl lg:text-8xl font-light tracking-tighter leading-[0.9] mb-4 md:mb-8">
             The Story of <br />
             a <span className="font-medium italic">Dreamer</span>
           </h1>

@@ -147,34 +147,36 @@ export const Navbar: React.FC<NavbarProps> = ({ onSearchClick }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
-            className={`lg:hidden fixed inset-x-0 top-20 bottom-0 z-40 backdrop-blur-xl ${theme === 'dark' ? 'bg-black/95' : 'bg-white/95'}`}
+            className={`lg:hidden fixed inset-x-0 top-20 h-[calc(100dvh-5rem)] z-40 overflow-y-auto backdrop-blur-xl ${theme === 'dark' ? 'bg-black' : 'bg-white'}`}
           >
-            <div className={`container mx-auto px-6 py-12 flex flex-col gap-8 ${theme === 'dark' ? 'bg-black' : 'bg-white'} backdrop-blur-xl`} >
-              {navItems.map((item, index) => (
-                <motion.div
-                  key={item.path}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                >
-                  <Link
-                    to={item.path}
-                    className={`text-2xl font-light tracking-[0.1em] transition-all ${
-                      location.pathname === item.path 
-                        ? (theme === 'dark' ? 'text-white' : 'text-black') 
-                        : (theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-black/40 hover:text-black')
-                    }`}
+            <div className="container mx-auto px-6 py-12 flex flex-col min-h-full" >
+              <div className="flex flex-col gap-8 mb-12">
+                {navItems.map((item, index) => (
+                  <motion.div
+                    key={item.path}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
                   >
-                    {item.name}
-                  </Link>
-                </motion.div>
-              ))}
+                    <Link
+                      to={item.path}
+                      className={`text-2xl font-light tracking-[0.1em] transition-all ${
+                        location.pathname === item.path 
+                          ? (theme === 'dark' ? 'text-white' : 'text-black') 
+                          : (theme === 'dark' ? 'text-white/40 hover:text-white' : 'text-black/40 hover:text-black')
+                      }`}
+                    >
+                      {item.name}
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
               
               <motion.div 
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 0.5 }}
-                className={`pt-12 border-t ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}
+                className={`mt-auto pt-12 border-t ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}
               >
                 <p className={`text-[10px] font-mono uppercase tracking-[0.5em] ${theme === 'dark' ? 'text-white/20' : 'text-black/20'}`}>
                   Think Different
