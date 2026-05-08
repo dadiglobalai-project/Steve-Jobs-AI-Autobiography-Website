@@ -179,8 +179,12 @@ export const AIMentorChat: React.FC = () => {
           {/* Header with Expand Toggle */}
           <div className={`p-4 border-b flex items-center justify-between transition-colors duration-500 ${theme === 'dark' ? 'border-white/10' : 'border-black/10'}`}>
             <div className="flex items-center gap-3">
-              <div className={`w-8 h-8 rounded-full flex items-center justify-center transition-colors duration-500 ${theme === 'dark' ? 'bg-white text-black' : 'bg-black text-white'}`}>
-                <Bot className="w-4 h-4" />
+              <div className={`w-8 h-8 rounded-full overflow-hidden flex items-center justify-center transition-colors duration-500 ${theme === 'dark' ? 'bg-white border-white/10' : 'bg-black border-black/10'} border`}>
+                <img 
+                  src="/images/steve_avatar.png" 
+                  alt="Steve Jobs AI" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <span className="text-sm font-medium">Steve Jobs AI</span>
             </div>
@@ -217,8 +221,14 @@ export const AIMentorChat: React.FC = () => {
                 animate={{ opacity: 1, y: 0 }}
                 className={`flex gap-4 ${msg.role === 'user' ? 'flex-row-reverse' : ''}`}
               >
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border transition-colors duration-500 ${msg.role === 'user' ? (theme === 'dark' ? 'bg-white text-black border-white/10' : 'bg-black text-white border-black/10') : (theme === 'dark' ? 'bg-zinc-800 text-white border-white/10' : 'bg-zinc-200 text-black border-black/10')}`}>
-                  {msg.role === 'user' ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border transition-colors duration-500 overflow-hidden ${msg.role === 'user' ? (theme === 'dark' ? 'bg-white text-black border-white/10' : 'bg-black text-white border-black/10') : (theme === 'dark' ? 'bg-zinc-800 text-white border-white/10' : 'bg-zinc-200 text-black border-black/10')}`}>
+                  {msg.role === 'user' ? <User className="w-5 h-5" /> : (
+                    <img 
+                      src="/images/steve_avatar.png" 
+                      alt="Steve Jobs" 
+                      className="w-full h-full object-cover"
+                    />
+                  )}
                 </div>
                 <div className={`max-w-[80%] p-4 rounded-2xl text-sm leading-relaxed transition-colors duration-500 ${msg.role === 'user' ? (theme === 'dark' ? 'bg-zinc-800 text-white rounded-tr-none' : 'bg-zinc-200 text-black rounded-tr-none') : (theme === 'dark' ? 'bg-white/5 text-gray-300 rounded-tl-none' : 'bg-black/5 text-gray-600 rounded-tl-none')}`}>
                   {msg.role === 'assistant' ? (
@@ -244,8 +254,12 @@ export const AIMentorChat: React.FC = () => {
             ))}
             {isLoading && (
               <div className="flex gap-4">
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border transition-colors duration-500 ${theme === 'dark' ? 'bg-zinc-800 border-white/10' : 'bg-zinc-200 border-black/10'}`}>
-                  <Bot className="w-5 h-5" />
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 border transition-colors duration-500 overflow-hidden ${theme === 'dark' ? 'bg-zinc-800 border-white/10' : 'bg-zinc-200 border-black/10'}`}>
+                  <img 
+                    src="/images/steve_avatar.png" 
+                    alt="Steve Jobs" 
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <div className={`p-4 rounded-2xl rounded-tl-none flex items-center gap-2 transition-colors duration-500 ${theme === 'dark' ? 'bg-white/5' : 'bg-black/5'}`}>
                   <Loader2 className={`w-4 h-4 animate-spin transition-colors duration-500 ${theme === 'dark' ? 'text-white/40' : 'text-black/40'}`} />
